@@ -7,5 +7,6 @@ enter on the repository: https://github.com/esp8266/Arduino
 All the dependencies of the project like the javascript codes, HTML and CSS files, will have to be uploaded into ESP8266 with the help of 
 the FS library for arduino: http://esp8266.github.io/Arduino/versions/2.0.0/doc/filesystem.html.
 
+The core of the HTTP requisitions are handled by the ESP8266Webserver library: https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WebServer/src/ESP8266WebServer.h
 
 
