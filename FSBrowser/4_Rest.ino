@@ -17,6 +17,15 @@ void selectDurationTime() {
   EEPROM.write(address_tempo, server.arg("time").toInt());
   EEPROM.commit();
   server.send(204, "");
+
+}
+
+void getDurationTime() {
+  DBG_OUTPUT_PORT.println("Getting actual bath duration time");
+  String durationTime = String(EEPROM.read(address_tempo));
+  DBG_OUTPUT_PORT.println(durationTime);
+  server.send(200, "text/plain", durationTime );
+
 }
 
 void setActualShowerTimePlus() {
@@ -57,6 +66,14 @@ void selectOffTime() {
   server.send(204, "");
 }
 
+void getOffTime() {
+  DBG_OUTPUT_PORT.println("Getting actual bath duration time");
+  String offTime = String(EEPROM.read(address_espera));
+  DBG_OUTPUT_PORT.println(offTime);
+  server.send(200, "text/plain", offTime );
+
+}
+
 void setActualOffTimePlus() {
 
   DBG_OUTPUT_PORT.println("Set Actual  aditional Off time:" + server.arg("plusTime").toInt());
@@ -95,6 +112,14 @@ void selectPausedTime() {
   server.send(204, "");
 }
 
+void getPausedTime() {
+  DBG_OUTPUT_PORT.println("Getting actual bath duration time");
+  String pausedTime = String(EEPROM.read(address_pausa));
+  DBG_OUTPUT_PORT.println(pausedTime);
+  server.send(200, "text/plain", pausedTime );
+
+}
+
 void setActualPausedTimePlus() {
 
   DBG_OUTPUT_PORT.println("Set Actual  aditional Paused time:" + server.arg("plusTime").toInt());
@@ -123,3 +148,12 @@ void setActualPausedTimeLess() {
   EEPROM.commit();
   server.send(204, "");
 }
+
+void resetWifiManagerSettings() {
+  DBG_OUTPUT_PORT.println("The actual saved network will be reseted");
+  wifiManager.resetSettings();
+  server.send(204, "");
+}
+
+
+

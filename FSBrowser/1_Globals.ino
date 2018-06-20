@@ -13,6 +13,7 @@
 
 //const byte DNS_PORT = 53;
 MDNSResponder mdns;
+WiFiManager wifiManager;
 
 #define buttonPin D2  // the number of the pushbutton pin
 #define rele D1      // the number of the LED pin

@@ -6,10 +6,12 @@ void setup(void) {
   Serial.print("FIRST");
 
   //Wifi Manager Configuration
-  WiFiManager wifiManager;
+  wifiManager.setSTAStaticIPConfig(IPAddress(192, 168, 0, 99), IPAddress(192, 168, 0, 1), IPAddress(255, 255, 255, 0));
+  wifiManager.setAPStaticIPConfig(IPAddress(10, 0, 1, 1), IPAddress(10, 0, 1, 1), IPAddress(255, 255, 255, 0));
   wifiManager.setAPCallback(configModeCallback);
   wifiManager.setSaveConfigCallback(saveConfigCallback);
-  wifiManager.autoConnect("SmartShower", "12345678");
+  wifiManager.autoConnect("ShowerIO", "12345678");
+
 
   pinMode(buttonPin, INPUT);
   pinMode(rele, OUTPUT);
@@ -91,21 +93,25 @@ void setup(void) {
   server.on ( "/setActualPausedTimePlus", setActualPausedTimePlus);
   server.on ( "/setActualPausedTimeLess", setActualPausedTimeLess);
   server.on ( "/setActualPausedTimeLess", setActualPausedTimeLess);
+  server.on ( "/getDurationTime", getDurationTime);
+  server.on ( "/getOffTime", getOffTime);
+  server.on ( "/getPausedTime", getPausedTime);
+  server.on ( "/reset", resetWifiManagerSettings);
 
   //create file
   server.onNotFound([]() {
     if (!handleFileRead(server.uri()))
       server.send(404, "text/plain", "FileNotFound");
   });
-if(mdns.begin("smartShower-1",WiFi.localIP()))
-  Serial.println("MDNS Responder Started!");
-  
+  if (mdns.begin("smartShower-1", WiFi.localIP()))
+    Serial.println("MDNS Responder Started!");
+
 
   server.begin();
 
   DBG_OUTPUT_PORT.println("HTTP server started");
 
-  MDNS.addService("http","tcp",80);
+  MDNS.addService("http", "tcp", 80);
 
 }
 
