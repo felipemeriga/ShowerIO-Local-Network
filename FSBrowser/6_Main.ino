@@ -6,8 +6,9 @@ void setup(void) {
   Serial.print("FIRST");
 
   //Wifi Manager Configuration
-  wifiManager.setSTAStaticIPConfig(IPAddress(192, 168, 0, 99), IPAddress(192, 168, 0, 1), IPAddress(255, 255, 255, 0));
-  wifiManager.setAPStaticIPConfig(IPAddress(10, 0, 1, 1), IPAddress(10, 0, 1, 1), IPAddress(255, 255, 255, 0));
+  //wifiManager.setSTAStaticIPConfig(IPAddress(192, 168, 0, 99), IPAddress(192, 168, 0, 1), IPAddress(255, 255, 255, 0));
+  //wifiManager.setAPStaticIPConfig(IPAddress(10, 0, 1, 1), IPAddress(10, 0, 1, 1), IPAddress(255, 255, 255, 0));
+
   wifiManager.setAPCallback(configModeCallback);
   wifiManager.setSaveConfigCallback(saveConfigCallback);
   wifiManager.autoConnect("ShowerIO", "12345678");
@@ -47,8 +48,18 @@ void setup(void) {
   //  //-----------------
 
   DBG_OUTPUT_PORT.println("");
-  DBG_OUTPUT_PORT.print("Connected! IP address: ");
+  DBG_OUTPUT_PORT.print("Connected! IP address: Test");
   DBG_OUTPUT_PORT.println(WiFi.localIP());
+
+  // Wait for connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  if (mdns.begin("SmartShower",WiFi.localIP()))
+    Serial.println("MDNS Responder Started!");
+
 
   //EEPROM Start Function
   EEPROM.begin(512);
@@ -83,6 +94,7 @@ void setup(void) {
     minutos_pausa = armazenado;
   }
 
+
   server.on ( "/selectDurationTime", selectDurationTime);
   server.on ( "/setActualShowerTimePlus", setActualShowerTimePlus);
   server.on ( "/setActualShowerTimeLess", setActualShowerTimeLess);
@@ -103,9 +115,6 @@ void setup(void) {
     if (!handleFileRead(server.uri()))
       server.send(404, "text/plain", "FileNotFound");
   });
-  if (mdns.begin("smartShower-1", WiFi.localIP()))
-    Serial.println("MDNS Responder Started!");
-
 
   server.begin();
 
@@ -118,6 +127,5 @@ void setup(void) {
 
 
 void loop(void) {
-  //  dnsServer.processNextRequest();
   server.handleClient();
 }
