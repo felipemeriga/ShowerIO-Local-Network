@@ -1,18 +1,15 @@
 package com.example.felip.smartbanho;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.felip.smartbanho.Process.ScanIpAddress;
+import com.example.felip.smartbanho.Process.ScanIpAddressImpl;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 
 import java.util.ArrayList;
@@ -25,17 +22,28 @@ import java.util.List;
 public class searchForDevices extends AppCompatActivity {
 
 
-    private ScanIpAddress scanIpAddress;
+    private ScanIpAddressImpl scanIpAddress;
     private List<String> ipList;
     private String espIpAddress;
     private SharedPreferences sharedPreferences;
     public static final String ESP8266 = "esp8266";
+    public static int RETRY = 3;
+    private static int SPLASH_TIME_OUT = 7000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.ipList = new ArrayList<>();
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         setContentView(R.layout.activity_search_for_devices);
+
+        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+        editor.putString("ip", null);
+        editor.apply();
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.spin_kit);
         FadingCircle fadingCircle = new FadingCircle();
@@ -46,8 +54,11 @@ public class searchForDevices extends AppCompatActivity {
 
         if (espIpAddress == null) {
             searchForShowerIO();
+        } else {
+            Intent showerIO = new Intent(searchForDevices.this, ShowerIO.class);
+            startActivity(showerIO);
+            finish();
         }
-
 
     }
 
@@ -67,7 +78,7 @@ public class searchForDevices extends AppCompatActivity {
     private void searchForShowerIO() {
 
         Log.d("searchForDevices Class", "Initializing scanIpAddress class");
-        scanIpAddress = new ScanIpAddress(this);
+        scanIpAddress = new ScanIpAddressImpl(this);
         scanIpAddress.setSubnet();
         scanIpAddress.checkHosts(scanIpAddress.subnet);
 
@@ -76,8 +87,8 @@ public class searchForDevices extends AppCompatActivity {
         }
         ipList = scanIpAddress.ipAddresses;
 
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
+      /*  // Instantiate the RequestQueue.
+        final RequestQueue queue = Volley.newRequestQueue(this);
 
         for (final String ip : ipList) {
             String url = "http://" + ip + "/check";
@@ -90,6 +101,8 @@ public class searchForDevices extends AppCompatActivity {
                                 Log.d("searchForDevices Class", "Found the correspondent device!");
                                 espIpAddress = ip;
                                 sharedPreferencesWrite(ip);
+                                queue.stop();
+                                onFinishedScan();
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -101,6 +114,25 @@ public class searchForDevices extends AppCompatActivity {
 
             // Add the request to the RequestQueue.
             queue.add(stringRequest);
+
+        }*/
+    }
+
+    private void onFinishedScan() {
+        if (espIpAddress == null) {
+            RETRY = RETRY - 1;
+            if (RETRY != 0) {
+                Log.d("searchForDevices Class", "Doing the process again to find the device");
+                searchForShowerIO();
+            } else {
+                Intent displayMessage = new Intent(searchForDevices.this, DisplayMessageActivity.class);
+                startActivity(displayMessage);
+                finish();
+            }
+        } else {
+            Intent showerIO = new Intent(searchForDevices.this, ShowerIO.class);
+            startActivity(showerIO);
+            finish();
         }
     }
 }
