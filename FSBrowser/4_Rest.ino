@@ -1,5 +1,13 @@
 //REST FUNCTIONS .INO FILE
 
+
+void check() {
+  DBG_OUTPUT_PORT.println("The ESP8266 server was discovered by an app");
+  String espVersion = "showerIO";
+  DBG_OUTPUT_PORT.println(espVersion);
+  server.send(200, "text/plain", espVersion );
+}
+
 bool handleFileRead(String path) {
   DBG_OUTPUT_PORT.println("handleFileRead: " + path);
   if (path.endsWith("/")) path += "index.html";
@@ -67,7 +75,7 @@ void selectOffTime() {
 }
 
 void getOffTime() {
-  DBG_OUTPUT_PORT.println("Getting actual bath duration time");
+  DBG_OUTPUT_PORT.println("Getting actual bath off time");
   String offTime = String(EEPROM.read(address_espera));
   DBG_OUTPUT_PORT.println(offTime);
   server.send(200, "text/plain", offTime );
@@ -113,7 +121,7 @@ void selectPausedTime() {
 }
 
 void getPausedTime() {
-  DBG_OUTPUT_PORT.println("Getting actual bath duration time");
+  DBG_OUTPUT_PORT.println("Getting actual bath paused time");
   String pausedTime = String(EEPROM.read(address_pausa));
   DBG_OUTPUT_PORT.println(pausedTime);
   server.send(200, "text/plain", pausedTime );
@@ -154,6 +162,8 @@ void resetWifiManagerSettings() {
   wifiManager.resetSettings();
   server.send(204, "");
 }
+
+
 
 
 

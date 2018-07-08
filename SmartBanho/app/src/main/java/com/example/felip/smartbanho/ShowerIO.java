@@ -1,23 +1,12 @@
 package com.example.felip.smartbanho;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,6 +28,7 @@ public class ShowerIO extends AppCompatActivity {
     private NsdManager.ResolveListener mResolveListener;
     private NsdServiceInfo mServiceInfo;
     public String mRPiAddress;
+    private String showerIOIpAddres;
 
     // The NSD service type that the RPi exposes.
     private static final String SERVICE_TYPE = "_http._tcp";
@@ -48,6 +38,7 @@ public class ShowerIO extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smart_shower);
+
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -59,7 +50,9 @@ public class ShowerIO extends AppCompatActivity {
 
         getSupportActionBar().setTitle("ShowerIO");
         getSupportActionBar().hide();
-        superWebview.loadUrl("http://www.google.com");
+
+
+        /*superWebview.loadUrl("http://www.google.com");
         Bitmap bitmapShower = BitmapFactory.decodeResource(getResources(), R.drawable.ic_shower);
 
         superImageView.setImageBitmap(bitmapShower);
@@ -96,7 +89,7 @@ public class ShowerIO extends AppCompatActivity {
             }
 
 
-        });
+        });*/
 
 
 //        mRPiAddress = "";
@@ -106,12 +99,12 @@ public class ShowerIO extends AppCompatActivity {
 //        mNsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, mDiscoveryListener);
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.super_menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -150,7 +143,7 @@ public class ShowerIO extends AppCompatActivity {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         startActivity(intent);
 
-    }
+    }*/
 
 /*    private void initializeDiscoveryListener() {
 

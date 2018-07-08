@@ -94,7 +94,7 @@ void setup(void) {
     minutos_pausa = armazenado;
   }
 
-
+  server.on ( "/check", check);
   server.on ( "/selectDurationTime", selectDurationTime);
   server.on ( "/setActualShowerTimePlus", setActualShowerTimePlus);
   server.on ( "/setActualShowerTimeLess", setActualShowerTimeLess);

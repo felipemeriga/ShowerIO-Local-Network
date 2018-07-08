@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho;
+package com.example.felip.smartbanho.Process;
 
 
 import android.content.Context;
@@ -6,16 +6,16 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.util.List;
 
 public class ScanIpAddress {
 
-    Context mContext;
-    WifiManager mWifiManager;
-    WifiInfo mWifiInfo;
-    String subnet;
+    private Context mContext;
+    private WifiManager mWifiManager;
+    private WifiInfo mWifiInfo;
+    public String subnet;
+    public List<String> ipAddresses;
+    public Boolean scanComplete = false;
 
     public ScanIpAddress(Context mContext) {
         this.mContext = mContext;
@@ -42,22 +42,13 @@ public class ScanIpAddress {
     }
 
     public void checkHosts(String subnet) {
+        String foundEspIp = "";
         Log.d("checkHosts()", "Scanning all Ip Address of the local network");
         try {
-            int timeout = 5;
-            for (int i = 1; i < 255; i++) {
-                String host = subnet + "." + i;
-                if (InetAddress.getByName(host).isReachable(timeout)) {
-                    Log.d("checkHosts()", host + " is reachable");
-                }
-            }
-        } catch (UnknownHostException e) {
-            Log.d("checkHosts()", " UnknownHostException e : " + e);
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.d("checkHosts()", "checkHosts() :: IOException e : " + e);
-            e.printStackTrace();
-        }
+            new CheckHostsTask(this).execute();
 
+        } catch (Exception e) {
+            Log.d("checkHosts()", " UnknownHostException e : " + e);
+        }
     }
 }

@@ -3,7 +3,9 @@
     package="com.example.felip.smartbanho">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +22,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".DisplayMessageActivity" />
-        <activity android:name=".ShowerIO"></activity>
+        <activity android:name=".ShowerIO" />
+        <activity
+            android:name=".searchForDevices"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_search_for_devices"
+            android:theme="@style/FullscreenTheme" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
