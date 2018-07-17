@@ -2,7 +2,9 @@ package com.example.felip.smartbanho;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
@@ -28,7 +30,8 @@ public class searchForDevices extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     public static final String ESP8266 = "esp8266";
     public static int RETRY = 3;
-    private static int SPLASH_TIME_OUT = 7000;
+    private static int SPLASH_TIME_OUT = 4000;
+    private String fixedUrl = "http://";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +52,16 @@ public class searchForDevices extends AppCompatActivity {
         FadingCircle fadingCircle = new FadingCircle();
         progressBar.setIndeterminateDrawable(fadingCircle);
 
-        Log.d("searchForDevices Class", "Getting the ip from esp saved in the last session");
-        sharedPreferencesRead();
+////        Log.d("searchForDevices Class", "Getting the ip from esp saved in the last session");
+////        sharedPreferencesRead();
+//        searchForShowerIO();
 
-        if (espIpAddress == null) {
-            searchForShowerIO();
-        } else {
-            Intent showerIO = new Intent(searchForDevices.this, ShowerIO.class);
-            startActivity(showerIO);
-            finish();
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                searchForShowerIO();
+            }
+        }, SPLASH_TIME_OUT);
 
     }
 
@@ -76,63 +79,117 @@ public class searchForDevices extends AppCompatActivity {
     }
 
     private void searchForShowerIO() {
+        Boolean lockScan = true;
 
-        Log.d("searchForDevices Class", "Initializing scanIpAddress class");
-        scanIpAddress = new ScanIpAddressImpl(this);
-        scanIpAddress.setSubnet();
-        scanIpAddress.checkHosts(scanIpAddress.subnet);
+        if (RETRY == 3) {
+            Log.d("searchForDevices Class", "Initializing scanIpAddress class");
 
-        while (!scanIpAddress.scanComplete) {
+            scanIpAddress = new ScanIpAddressImpl(this);
+            scanIpAddress.setSubnet();
+            scanIpAddress.scanComplete = false;
+            new CheckHostsTask().execute();
 
+
+        } else {
+            scanIpAddress.scanComplete = false;
+            new CheckHostsTask().execute();
         }
-        ipList = scanIpAddress.ipAddresses;
 
-      /*  // Instantiate the RequestQueue.
-        final RequestQueue queue = Volley.newRequestQueue(this);
+//        while (lockScan) {
+//            if (scanIpAddress.foundEspIp) {
+//                Log.d("searchForShowerIO Class", "Found a device, saving it on shared preferences");
+//                sharedPreferencesWrite(scanIpAddress.espIpAddress);
+//                this.espIpAddress = scanIpAddress.espIpAddress;
+//                lockScan = false;
+//                onFinishedScan();
+//            } else {
+//                if (scanIpAddress.scanComplete) {
+//                    if (RETRY != 0) {
+//                        RETRY--;
+//                        searchForShowerIO();
+//                    } else {
+//                        lockScan = false;
+//                        onFinishedScan();
+//                    }
+//                }
+//            }
+//        }
 
-        for (final String ip : ipList) {
-            String url = "http://" + ip + "/check";
-            // Request a string response from the provided URL.
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.contains("showerIO")) {
-                                Log.d("searchForDevices Class", "Found the correspondent device!");
-                                espIpAddress = ip;
-                                sharedPreferencesWrite(ip);
-                                queue.stop();
-                                onFinishedScan();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("searchForDevices Class", "Error in doind the request");
-                }
-            });
-
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest);
-
-        }*/
     }
 
     private void onFinishedScan() {
         if (espIpAddress == null) {
-            RETRY = RETRY - 1;
-            if (RETRY != 0) {
-                Log.d("searchForDevices Class", "Doing the process again to find the device");
-                searchForShowerIO();
-            } else {
-                Intent displayMessage = new Intent(searchForDevices.this, DisplayMessageActivity.class);
-                startActivity(displayMessage);
-                finish();
-            }
+            Intent displayMessage = new Intent(searchForDevices.this, DisplayMessageActivity.class);
+            startActivity(displayMessage);
+            finish();
         } else {
             Intent showerIO = new Intent(searchForDevices.this, ShowerIO.class);
             startActivity(showerIO);
             finish();
+        }
+    }
+
+    private class CheckHostsTask extends AsyncTask<Void, String, String> {
+
+        public CheckHostsTask() {
+            super();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            s = s + s;
+        }
+
+        @Override
+        protected String doInBackground(Void... records) {
+//            try {
+//                int timeout = 5;
+//                for (int i = 2; i < 255; i++) {
+//                    String host = "";
+//                    host = scanIpAddress.subnet + "." + i;
+//
+//                    if (InetAddress.getByName(host).isReachable(timeout)) {
+//                        Log.d("doInBackground()", host + " is reachable");
+//                        String esp8266RestUrl = "/check";
+//                        fixedUrl = fixedUrl + host + esp8266RestUrl;
+//                        OkHttpClient client = new OkHttpClient();
+//
+//                        final Request request = new Request.Builder()
+//                                .url(fixedUrl)
+//                                .build();
+//                        client.newCall(request).enqueue(new Callback() {
+//                            @Override
+//                            public void onFailure(Call call, IOException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            @Override
+//                            public void onResponse(Call call, Response response) throws IOException {
+//                                String resultIp = request.url().host();
+//                                scanIpAddress.espIpAddress = resultIp;
+//                                Log.d("doInBackground()", "Found a responding device!");
+//                                scanIpAddress.foundEspIp = true;
+//                            }
+//                        });
+//
+//                    }
+//                    if (scanIpAddress.foundEspIp) {
+//                        break;
+//                    }
+//                }
+//                scanIpAddress.scanComplete = true;
+//
+//            } catch (UnknownHostException e) {
+//                Log.d("doInBackground()", " UnknownHostException e : " + e);
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                Log.d("doInBackground()", "checkHosts() :: IOException e : " + e);
+//                e.printStackTrace();
+//            } finally {
+//                Log.d("checkHosts()", "All the ip Address where scanned!");
+//            }
+            return "asdasd";
         }
     }
 }

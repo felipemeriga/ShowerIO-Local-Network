@@ -16,6 +16,9 @@ public class ScanIpAddressImpl implements ScanIpAddress {
     public String subnet;
     public List<String> ipAddresses;
     public Boolean scanComplete = false;
+    public Boolean foundEspIp = false;
+    public String espIpAddress;
+
 
     public ScanIpAddressImpl(Context mContext) {
         this.mContext = mContext;
@@ -27,7 +30,6 @@ public class ScanIpAddressImpl implements ScanIpAddress {
         WifiManager mWifiManager = (WifiManager) this.mContext.getSystemService(Context.WIFI_SERVICE);
         WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
         this.subnet = getSubnetAddress(mWifiManager.getDhcpInfo().gateway);
-
     }
 
     public String getSubnetAddress(int address) {

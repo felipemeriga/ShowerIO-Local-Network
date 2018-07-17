@@ -28,7 +28,6 @@ public class DisplayMessageActivity extends AppCompatActivity {
                 Intent searchForDevices = new Intent(DisplayMessageActivity.this, searchForDevices.class);
                 startActivity(searchForDevices);
                 finish();
-
             }
         });
 

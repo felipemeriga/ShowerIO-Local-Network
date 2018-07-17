@@ -4,9 +4,9 @@
     android:id="@+id/activity_second"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/back2"
     android:gravity="center"
-    tools:context=".DisplayMessageActivity"
-    android:background="@drawable/back2">
+    tools:context=".DisplayMessageActivity">
 
 
     <Button
@@ -28,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="133dp"
         android:fontFamily="@font/abeezee"
-        android:text="TextView"
+        android:text="Nenhum dispositivo foi encontrado, tente novamente"
         android:textSize="24sp"
         android:textStyle="bold"
         tools:text="Nenhum dispositivo foi encontrado, tente novamente" />

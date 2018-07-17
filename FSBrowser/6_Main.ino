@@ -48,7 +48,7 @@ void setup(void) {
   //  //-----------------
 
   DBG_OUTPUT_PORT.println("");
-  DBG_OUTPUT_PORT.print("Connected! IP address: Test");
+  DBG_OUTPUT_PORT.print("Connected! IP address: ");
   DBG_OUTPUT_PORT.println(WiFi.localIP());
 
   // Wait for connection

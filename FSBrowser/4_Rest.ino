@@ -4,8 +4,10 @@
 void check() {
   DBG_OUTPUT_PORT.println("The ESP8266 server was discovered by an app");
   String espVersion = "showerIO";
+  String ip = WiFi.localIP().toString();
   DBG_OUTPUT_PORT.println(espVersion);
-  server.send(200, "text/plain", espVersion );
+  DBG_OUTPUT_PORT.println(WiFi.localIP());
+  server.send(200, "text/plain", ip );
 }
 
 bool handleFileRead(String path) {

@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class CheckHostsTask extends AsyncTask<Void, Void, Void> {
+public class CheckHostsTask extends AsyncTask<Void, Void, Void> {
 
     private Exception exception;
     private ScanIpAddressImpl scanIpAddress;
@@ -26,20 +26,21 @@ class CheckHostsTask extends AsyncTask<Void, Void, Void> {
         this.scanIpAddress.ipAddresses = new ArrayList<>();
     }
 
-
+    @Override
     protected Void doInBackground(Void... records) {
         try {
             int timeout = 5;
             for (int i = 2; i < 255; i++) {
-                String host = this.scanIpAddress.subnet + "." + i;
+                String host = "";
+                host = this.scanIpAddress.subnet + "." + i;
 
                 if (InetAddress.getByName(host).isReachable(timeout)) {
                     Log.d("doInBackground()", host + " is reachable");
-                    this.scanIpAddress.ipAddresses.add(host);
-                    fixedUrl = fixedUrl + host;
+                    String esp8266RestUrl = "/check";
+                    fixedUrl = fixedUrl + host + esp8266RestUrl;
                     OkHttpClient client = new OkHttpClient();
 
-                    Request request = new Request.Builder()
+                    final Request request = new Request.Builder()
                             .url(fixedUrl)
                             .build();
                     client.newCall(request).enqueue(new Callback() {
@@ -50,11 +51,16 @@ class CheckHostsTask extends AsyncTask<Void, Void, Void> {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Log.d("doInBackground()", "Deu bom!");
-                            String ae = "deubom";
+                            String resultIp = request.url().host();
+                            scanIpAddress.espIpAddress = resultIp;
+                            Log.d("doInBackground()", "Found a responding device!");
+                            scanIpAddress.foundEspIp = true;
                         }
                     });
 
+                }
+                if (scanIpAddress.foundEspIp) {
+                    break;
                 }
             }
             this.scanIpAddress.scanComplete = true;
@@ -71,9 +77,7 @@ class CheckHostsTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    protected void onPostExecute() {
-        Log.d("onPostExecute()", "Scan Completed!");
-    }
-
-
 }
+
+
+
