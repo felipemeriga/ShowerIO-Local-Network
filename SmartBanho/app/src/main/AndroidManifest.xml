@@ -24,7 +24,7 @@
         <activity android:name=".DisplayMessageActivity" />
         <activity android:name=".ShowerIO" />
         <activity
-            android:name=".searchForDevices"
+            android:name=".SearchForDevices"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_search_for_devices"
             android:theme="@style/FullscreenTheme" />

@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent searchForDevices = new Intent(HomeActivity.this, searchForDevices.class);
+                Intent searchForDevices = new Intent(HomeActivity.this, SearchForDevices.class);
                 startActivity(searchForDevices);
                 finish();
             }

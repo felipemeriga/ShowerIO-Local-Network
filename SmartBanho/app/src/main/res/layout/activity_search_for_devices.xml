@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/back2">
+    android:background="@drawable/back_def">
 
 
     <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,8 +11,10 @@
         style="@style/SpinKitView.Large.FadingCircle"
         android:layout_width="128dp"
         android:layout_height="110dp"
-        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:layout_marginTop="156dp"
         app:SpinKit_Color="@color/colorPrimary" />
 
     <TextView
@@ -21,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="148dp"
+        android:layout_marginBottom="228dp"
         android:fontFamily="@font/abeezee"
         android:text="Procurando dispositivos..."
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"

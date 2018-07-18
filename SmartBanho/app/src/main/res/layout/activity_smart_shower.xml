@@ -27,12 +27,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.1" />
 
-            <ImageView
-                android:id="@+id/myImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.9"
-                android:src="@mipmap/ic_launcher" />
 
         </LinearLayout>
 

@@ -43,7 +43,6 @@ public class ShowerIO extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         superProgressBar = findViewById(R.id.myProgressBar);
-        superImageView = findViewById(R.id.myImageView);
         superWebview = findViewById(R.id.myWebView);
         superLinerLayout = findViewById(R.id.myLinearLayout);
 
@@ -54,7 +53,6 @@ public class ShowerIO extends AppCompatActivity {
         superWebview.loadUrl(showerIOIpAddres);
         Bitmap bitmapShower = BitmapFactory.decodeResource(getResources(), R.drawable.ic_shower);
 
-        superImageView.setImageBitmap(bitmapShower);
         superProgressBar.setMax(100);
         superWebview.getSettings().setJavaScriptEnabled(true);
         superWebview.setWebViewClient(new WebViewClient() {
@@ -134,7 +132,8 @@ public class ShowerIO extends AppCompatActivity {
     }
 
     public void onNotFoundEsp() {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        startActivity(intent);
+        Intent searchForDevices = new Intent(this, SearchForDevices.class);
+        startActivity(searchForDevices);
+        finish();
     }
 }

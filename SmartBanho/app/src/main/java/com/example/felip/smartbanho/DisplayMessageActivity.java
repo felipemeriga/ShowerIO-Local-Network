@@ -25,7 +25,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
                 editor.putString("ip", null);
                 editor.apply();
-                Intent searchForDevices = new Intent(DisplayMessageActivity.this, searchForDevices.class);
+                Intent searchForDevices = new Intent(DisplayMessageActivity.this, SearchForDevices.class);
                 startActivity(searchForDevices);
                 finish();
             }
