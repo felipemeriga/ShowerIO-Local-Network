@@ -135,15 +135,15 @@ app.service('showerService', function ($http) {
             url: '/getDurationTime'
         });
     };
-	
-	this.getOffTime = function () {
+
+    this.getOffTime = function () {
         return $http({
             method: 'GET',
             url: '/getOffTime'
         });
     };
-	
-	this.getPausedTime = function () {
+
+    this.getPausedTime = function () {
         return $http({
             method: 'GET',
             url: '/getPausedTime'

@@ -52,7 +52,7 @@ app.controller('showerController', function ($scope, showerService, $q) {
     $scope.resetWifiManagerSettings = function () {
         console.log('Reseting Wifi saved credentials');
         showerService.resetWifiManagerSettings();
-    }
+    };
 
     $scope.getDurationTime = function () {
         var d = $q.defer();
@@ -60,52 +60,52 @@ app.controller('showerController', function ($scope, showerService, $q) {
             d.resolve(response);
         });
         return d.promise;
-    }
+    };
 
 
     $scope.setDurationTime = function (response) {
         if (response.status == 200 || response.status == 204) {
             $scope.selectedDurationTime = response.data;
         }
-    }
-	
-	$scope.getOffTime = function () {
+    };
+
+    $scope.getOffTime = function () {
         var d = $q.defer();
         showerService.getOffTime().then(function (response) {
             d.resolve(response);
         });
         return d.promise;
-    }
-	
-	$scope.setOffTime = function (response) {
+    };
+
+    $scope.setOffTime = function (response) {
         if (response.status == 200 || response.status == 204) {
             $scope.selectedOffTime = response.data;
         }
-    }
-	
-	$scope.getPausedTime = function () {
+    };
+
+    $scope.getPausedTime = function () {
         var d = $q.defer();
         showerService.getPausedTime().then(function (response) {
             d.resolve(response);
         });
         return d.promise;
-    }
-	
-	$scope.setPausedTime = function (response) {
+    };
+
+    $scope.setPausedTime = function (response) {
         if (response.status == 200 || response.status == 204) {
             $scope.selectedPausedTime = response.data;
         }
-    }
+    };
 
     $q.all([
         $scope.getDurationTime(),
-		$scope.getOffTime,
-		$scope.getPausedTime
-		
+        $scope.getOffTime(),
+        $scope.getPausedTime()
+
     ]).then(function (response) {
         $scope.setDurationTime(response[0]);
-		$scope.setOffTime(response[1]);
-		$scope.setPausedTime(response[2]);
+        $scope.setOffTime(response[1]);
+        $scope.setPausedTime(response[2]);
     });
 
 });

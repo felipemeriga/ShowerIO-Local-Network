@@ -1,1 +1,3 @@
-var app = angular.module('showerApp', []);
+var app = angular.module('showerApp', ['ui.router']);
+
+

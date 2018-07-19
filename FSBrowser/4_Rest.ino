@@ -10,15 +10,15 @@ void check() {
   server.send(200, "text/plain", ip );
 }
 
-bool handleFileRead(String path) {
-  DBG_OUTPUT_PORT.println("handleFileRead: " + path);
-  if (path.endsWith("/")) path += "index.html";
-  String contentType = getContentType(path);
-  File file = SPIFFS.open(path, "r");
-  DBG_OUTPUT_PORT.println(contentType);
-  server.streamFile(file, contentType);
-  return true;
-}
+//bool handleFileRead(String path) {
+//  DBG_OUTPUT_PORT.println("handleFileRead: " + path);
+//  if (path.endsWith("/")) path += "index.html";
+//  String contentType = getContentType(path);
+//  File file = SPIFFS.open(path, "r");
+//  DBG_OUTPUT_PORT.println(contentType);
+//  server.streamFile(file, contentType);
+//  return true;
+//}
 
 void selectDurationTime() {
 

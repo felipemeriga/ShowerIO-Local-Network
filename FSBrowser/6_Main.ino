@@ -109,12 +109,7 @@ void setup(void) {
   server.on ( "/getOffTime", getOffTime);
   server.on ( "/getPausedTime", getPausedTime);
   server.on ( "/reset", resetWifiManagerSettings);
-
-  //create file
-  server.onNotFound([]() {
-    if (!handleFileRead(server.uri()))
-      server.send(404, "text/plain", "FileNotFound");
-  });
+  server.serveStatic("/", SPIFFS, "/index.html", "max-age=86400");
 
   server.begin();
 
