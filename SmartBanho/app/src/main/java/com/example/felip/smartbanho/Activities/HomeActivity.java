@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho;
+package com.example.felip.smartbanho.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.felip.smartbanho.R;
 
 public class HomeActivity extends AppCompatActivity {
 

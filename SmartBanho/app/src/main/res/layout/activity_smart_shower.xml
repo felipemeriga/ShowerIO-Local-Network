@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/mySwipeLayout"
-    tools:context=".ShowerIO">
+    tools:context=".Activities.ShowerIO">
 
 
     <LinearLayout

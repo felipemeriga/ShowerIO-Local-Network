@@ -6,6 +6,4 @@ public interface ScanIpAddress {
 
     public String getSubnetAddress(int address);
 
-    public void checkHosts(String subnet);
-
 }

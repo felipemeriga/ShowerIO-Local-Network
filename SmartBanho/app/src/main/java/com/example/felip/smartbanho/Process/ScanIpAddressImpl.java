@@ -43,14 +43,4 @@ public class ScanIpAddressImpl implements ScanIpAddress {
         return ipString;
     }
 
-    public void checkHosts(String subnet) {
-        String foundEspIp = "";
-        Log.d("checkHosts()", "Scanning all Ip Address of the local network");
-        try {
-            new CheckHostsTask(this).execute();
-
-        } catch (Exception e) {
-            Log.d("checkHosts()", " UnknownHostException e : " + e);
-        }
-    }
 }

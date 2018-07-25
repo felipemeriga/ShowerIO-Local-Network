@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho;
+package com.example.felip.smartbanho.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.example.felip.smartbanho.Process.ScanIpAddressImpl;
+import com.example.felip.smartbanho.R;
 import com.github.ybq.android.spinkit.style.WanderingCubes;
 
 import java.io.IOException;
@@ -26,10 +27,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class SearchForDevices extends AppCompatActivity {
 
 
@@ -50,13 +47,12 @@ public class SearchForDevices extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         setContentView(R.layout.activity_search_for_devices);
 
         //Use this for debugging to clear the SharedPreferences
-        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
-        editor.putString("ip", null);
-        editor.apply();
+//        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+//        editor.putString("ip", null);
+//        editor.apply();
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.spin_kit);
         WanderingCubes wanderingCubes = new WanderingCubes();
@@ -100,6 +96,7 @@ public class SearchForDevices extends AppCompatActivity {
     }
 
     private void onFinishedScan() {
+
         if (espIpAddress == null) {
             Intent displayMessage = new Intent(SearchForDevices.this, DisplayMessageActivity.class);
             startActivity(displayMessage);

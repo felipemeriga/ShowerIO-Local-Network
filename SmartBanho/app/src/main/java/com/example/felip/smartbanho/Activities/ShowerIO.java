@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho;
+package com.example.felip.smartbanho.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +20,8 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import com.example.felip.smartbanho.R;
 
 
 public class ShowerIO extends AppCompatActivity {

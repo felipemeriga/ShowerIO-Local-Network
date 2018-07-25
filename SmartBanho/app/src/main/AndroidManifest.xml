@@ -14,17 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity">
+        <activity android:name=".Activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DisplayMessageActivity" />
-        <activity android:name=".ShowerIO" />
+        <activity android:name=".Activities.DisplayMessageActivity" />
+        <activity android:name=".Activities.ShowerIO" />
         <activity
-            android:name=".SearchForDevices"
+            android:name=".Activities.SearchForDevices"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_search_for_devices"
             android:theme="@style/FullscreenTheme" />
