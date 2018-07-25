@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.example.felip.smartbanho.Process.ScanIpAddressImpl;
-import com.github.ybq.android.spinkit.style.FadingCircle;
+import com.github.ybq.android.spinkit.style.WanderingCubes;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -54,13 +54,13 @@ public class SearchForDevices extends AppCompatActivity {
         setContentView(R.layout.activity_search_for_devices);
 
         //Use this for debugging to clear the SharedPreferences
-//        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
-//        editor.putString("ip", null);
-//        editor.apply();
+        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+        editor.putString("ip", null);
+        editor.apply();
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.spin_kit);
-        FadingCircle fadingCircle = new FadingCircle();
-        progressBar.setIndeterminateDrawable(fadingCircle);
+        WanderingCubes wanderingCubes = new WanderingCubes();
+        progressBar.setIndeterminateDrawable(wanderingCubes);
 
         Log.d("searchForDevices Class", "Getting the ip from esp saved in the last session");
         sharedPreferencesRead();
@@ -140,7 +140,7 @@ public class SearchForDevices extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... records) {
             try {
-                int timeout = 5;
+                int timeout = 100;
                 for (int i = 2; i < 255; i++) {
                     String host = "";
                     host = searchForDevices.scanIpAddress.subnet + "." + i;

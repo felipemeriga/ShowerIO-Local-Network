@@ -50,7 +50,7 @@ Estado_Botao Estado_Bot = desligado;
 Estado_Banho Banho = habilitado;
 
 
-//posiçoes para armazenar variaveis na EEPROM
+//posiÃ§oes para armazenar variaveis na EEPROM
 int address_tempo = 0;
 int address_espera = 1;
 int address_pausa = 2;
@@ -58,7 +58,7 @@ int address_pausa = 2;
 
 byte armazenado;
 byte minutos = EEPROM.read(address_tempo); //tempo de banho
-byte minutos_espera = EEPROM.read(address_espera); //tempo de espera até o banho ser habilitado novamente
+byte minutos_espera = EEPROM.read(address_espera); //tempo de espera atÃ© o banho ser habilitado novamente
 byte minutos_pausa = EEPROM.read(address_pausa); // tempo que o banho pode ficar pausado
 int tempo = (int)minutos * 60;
 int tempo_espera = (int)minutos_espera * 60;
@@ -95,5 +95,6 @@ void setActualPausedTimeLess();
 //Shower Logic Functions
 void logica_botao();
 void logica_tempo();
+
 
 

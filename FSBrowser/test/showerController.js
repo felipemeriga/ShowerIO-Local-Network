@@ -101,6 +101,7 @@ app.controller('showerController', function ($scope, showerService, $q) {
         $scope.getDurationTime(),
         $scope.getOffTime(),
         $scope.getPausedTime()
+
     ]).then(function (response) {
         $scope.setDurationTime(response[0]);
         $scope.setOffTime(response[1]);

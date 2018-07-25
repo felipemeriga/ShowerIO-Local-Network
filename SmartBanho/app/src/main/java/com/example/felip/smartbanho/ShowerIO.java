@@ -47,7 +47,7 @@ public class ShowerIO extends AppCompatActivity {
         superLinerLayout = findViewById(R.id.myLinearLayout);
 
         sharedPreferences = getSharedPreferences(ESP8266, MODE_PRIVATE);
-        showerIOIpAddres = showerIOIpAddres + sharedPreferences.getString("ip", null);
+        showerIOIpAddres = showerIOIpAddres + sharedPreferences.getString("ip", null) + "/index.html";
 
 
         superWebview.loadUrl(showerIOIpAddres);

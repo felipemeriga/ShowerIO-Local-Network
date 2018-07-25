@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/back_def">
 
 
     <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/spin_kit"
-        style="@style/SpinKitView.Large.FadingCircle"
+        style="@style/SpinKitView.Large.WanderingCubes"
         android:layout_width="128dp"
         android:layout_height="110dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="156dp"
-        app:SpinKit_Color="@color/colorPrimary" />
+        app:SpinKit_Color="@android:color/background_light" />
 
     <TextView
         android:id="@+id/textView2"
@@ -23,10 +22,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="228dp"
+        android:layout_marginBottom="119dp"
         android:fontFamily="@font/abeezee"
         android:text="Procurando dispositivos..."
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@android:color/background_light"
         android:textSize="26sp"
         android:textStyle="bold" />
 

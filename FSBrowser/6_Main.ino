@@ -109,7 +109,8 @@ void setup(void) {
   server.on ( "/getOffTime", getOffTime);
   server.on ( "/getPausedTime", getPausedTime);
   server.on ( "/reset", resetWifiManagerSettings);
-  server.serveStatic("/", SPIFFS, "/index.html", "max-age=86400");
+  
+  server.serveStatic("/", SPIFFS, "/", "max-age=86400");
 
   server.begin();
 
@@ -124,3 +125,4 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
 }
+
