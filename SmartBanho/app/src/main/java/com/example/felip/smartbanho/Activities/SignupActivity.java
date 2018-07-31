@@ -2,6 +2,8 @@ package com.example.felip.smartbanho.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,21 +17,37 @@ import android.widget.Toast;
 
 import com.example.felip.smartbanho.R;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_address) EditText _addressText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_mobile) EditText _mobileText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
-    @BindView(R.id.btn_signup) Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
-    
+    private SharedPreferences sharedPreferences;
+    @BindView(R.id.input_name)
+    EditText _nameText;
+    @BindView(R.id.input_email)
+    EditText _emailText;
+    @BindView(R.id.input_password)
+    EditText _passwordText;
+    @BindView(R.id.input_reEnterPassword)
+    EditText _reEnterPasswordText;
+    @BindView(R.id.btn_signup)
+    Button _signupButton;
+    @BindView(R.id.link_login)
+    TextView _loginLink;
+    String espIpAddress;
+    private final String ESP8266 = "esp8266";
+    private final String CREDENTIALS_URL = "/createCredentials?email=";
+    private Boolean createCredentialsFlag = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +56,9 @@ public class SignupActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+
+        sharedPreferences = getSharedPreferences(ESP8266, MODE_PRIVATE);
+        espIpAddress = sharedPreferences.getString("ip", null);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +71,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -67,6 +88,11 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         _signupButton.setEnabled(false);
+        new CreatedCredentials(this).execute();
+
+    }
+
+    public void onAuthorizedSignup() {
 
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -75,9 +101,7 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.show();
 
         String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -112,9 +136,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -125,13 +147,6 @@ public class SignupActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-        if (address.isEmpty()) {
-            _addressText.setError("Enter Valid Address");
-            valid = false;
-        } else {
-            _addressText.setError(null);
-        }
-
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
@@ -140,12 +155,6 @@ public class SignupActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (mobile.isEmpty() || mobile.length()!=10) {
-            _mobileText.setError("Enter Valid Mobile Number");
-            valid = false;
-        } else {
-            _mobileText.setError(null);
-        }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
@@ -162,5 +171,54 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private class CreatedCredentials extends AsyncTask<Void, String, String> {
+
+        SignupActivity signupActivity;
+
+        public CreatedCredentials(SignupActivity signupActivity) {
+            super();
+            this.signupActivity = signupActivity;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (signupActivity.createCredentialsFlag == true) {
+                onAuthorizedSignup();
+            } else {
+                onSignupFailed();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Void... records) {
+            Log.d("SignupActivity Class", "Sending credentials to ESP8266");
+            String fixedUrl = "http://";
+            fixedUrl = fixedUrl + signupActivity.espIpAddress + CREDENTIALS_URL + signupActivity._emailText.getText().toString() + "&password=" + signupActivity._passwordText.getText().toString();
+            Log.d("SignupActivity Class", fixedUrl);
+            try {
+                OkHttpClient client = new OkHttpClient();
+                final Request request = new Request.Builder()
+                        .url(fixedUrl)
+                        .build();
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                        Log.d("SignupActivity Class", "The server could not be contacted");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        signupActivity.createCredentialsFlag = true;
+                    }
+                });
+            } catch (Exception e) {
+                Log.d("SignupActivity Class", e.getMessage());
+                throw e;
+            }
+            return "done";
+        }
     }
 }

@@ -50,9 +50,9 @@ public class SearchForDevices extends AppCompatActivity {
         setContentView(R.layout.activity_search_for_devices);
 
         //Use this for debugging to clear the SharedPreferences
-//        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
-//        editor.putString("ip", null);
-//        editor.apply();
+        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+        editor.putString("ip", null);
+        editor.apply();
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.spin_kit);
         WanderingCubes wanderingCubes = new WanderingCubes();
@@ -102,8 +102,10 @@ public class SearchForDevices extends AppCompatActivity {
             startActivity(displayMessage);
             finish();
         } else {
-            Intent showerIO = new Intent(SearchForDevices.this, ShowerIO.class);
-            startActivity(showerIO);
+//            Intent showerIO = new Intent(SearchForDevices.this, ShowerIO.class);
+//            startActivity(showerIO);
+            Intent loginAcitivty = new Intent(SearchForDevices.this, LoginActivity.class);
+            startActivity(loginAcitivty);
             finish();
         }
     }

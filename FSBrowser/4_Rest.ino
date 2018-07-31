@@ -1,6 +1,5 @@
 //REST FUNCTIONS .INO FILE
 
-
 void check() {
   DBG_OUTPUT_PORT.println("The ESP8266 server was discovered by an app");
   String espVersion = "showerIO";
@@ -9,6 +8,7 @@ void check() {
   DBG_OUTPUT_PORT.println(WiFi.localIP());
   server.send(200, "text/plain", ip );
 }
+
 
 //bool handleFileRead(String path) {
 //  DBG_OUTPUT_PORT.println("handleFileRead: " + path);
@@ -163,6 +163,17 @@ void resetWifiManagerSettings() {
   DBG_OUTPUT_PORT.println("The actual saved network will be reseted");
   wifiManager.resetSettings();
   server.send(204, "");
+}
+
+void createCredentials() {
+  DBG_OUTPUT_PORT.println("A new account is being created");
+  String password = String(server.arg("password"));
+  String email = String(server.arg("email"));
+//  EEPROM.write(address_password, password);
+//  DBG_OUTPUT_PORT.println(email);
+//  DBG_OUTPUT_PORT.println(password);
+//  EEPROM.commit();
+//  DBG_OUTPUT_PORT.println("Credentials Saved Successfully!");
 }
 
 
