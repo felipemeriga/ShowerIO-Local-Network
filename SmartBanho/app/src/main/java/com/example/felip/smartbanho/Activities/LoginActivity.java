@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private String espIpAddress;
     private String fixedUrl = "http://";
     private final String AUTHENTICATION_URL = "/auth?password=";
+    private Boolean authenticate_result = false;
 
     @BindView(R.id.input_email)
     EditText _emailText;
@@ -97,6 +98,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         _loginButton.setEnabled(false);
+        new ValidateCredentials(this).execute();
+
+    }
+
+    public void onPostAuthenticate() {
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -184,8 +190,17 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            if (loginActivity.authenticate_result == true) {
+                onPostAuthenticate();
+            } else {
+                onLoginFailed();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Void... records) {
             fixedUrl = "http://";
-            fixedUrl = fixedUrl + espIpAddress + AUTHENTICATION_URL + _passwordText.getText();
+            fixedUrl = fixedUrl + loginActivity.espIpAddress + AUTHENTICATION_URL + loginActivity._passwordText.getText().toString();
             OkHttpClient client = new OkHttpClient();
             final Request request = new Request.Builder()
                     .url(fixedUrl)
@@ -198,19 +213,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    String resultIp = request.url().host();
+                    String result = response.body().toString();
+                    if (result.equals("Y")) {
+                        loginActivity.authenticate_result = true;
+                    }
                 }
             });
-
+            return "done";
         }
-
-        @Override
-        protected String doInBackground(Void... records) {
-            return "asdada";
-        }
-
     }
-
-
-
 }
