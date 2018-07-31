@@ -54,12 +54,17 @@ Estado_Banho Banho = habilitado;
 int address_tempo = 0;
 int address_espera = 1;
 int address_pausa = 2;
+String password = 3;
+String email = 4;
 
 
 byte armazenado;
 byte minutos = EEPROM.read(address_tempo); //tempo de banho
 byte minutos_espera = EEPROM.read(address_espera); //tempo de espera atÃ© o banho ser habilitado novamente
 byte minutos_pausa = EEPROM.read(address_pausa); // tempo que o banho pode ficar pausado
+byte password = EEPROM.read(password);
+byte email = EEPROM.read(email);
+
 int tempo = (int)minutos * 60;
 int tempo_espera = (int)minutos_espera * 60;
 int tempo_de_pausa = (int)minutos_pausa * 60;
