@@ -169,11 +169,32 @@ void createCredentials() {
   DBG_OUTPUT_PORT.println("A new account is being created");
   String password = String(server.arg("password"));
   String email = String(server.arg("email"));
-//  EEPROM.write(address_password, password);
-//  DBG_OUTPUT_PORT.println(email);
-//  DBG_OUTPUT_PORT.println(password);
-//  EEPROM.commit();
-//  DBG_OUTPUT_PORT.println("Credentials Saved Successfully!");
+  if (saveCredentials(email, password)) {
+    DBG_OUTPUT_PORT.println("Credentials Saved Successfully!");
+    server.send(200, "text/plain", "TRUE");
+  } else {
+    server.send(500 , "text/plain", "FALSE" );
+  }
+}
+
+
+void verifyCredentials() {
+  DBG_OUTPUT_PORT.println("Checking credentials");
+  String password = String(server.arg("password"));
+  String email = String(server.arg("email"));
+  String checkAuth = checkCredentials(email, password);
+  if (checkAuth != "ERROR") {
+    DBG_OUTPUT_PORT.println("Credentials Saved Successfully!");
+    server.send(200, "text/plain", checkAuth);
+  } else {
+    server.send(500 , "text/plain", checkAuth );
+  }
+}
+
+void verifyAccountExistance() {
+  DBG_OUTPUT_PORT.println("Checking credentials existance");
+  String existance = checkExistance();
+  server.send(200, "text/plain", existance);
 }
 
 
