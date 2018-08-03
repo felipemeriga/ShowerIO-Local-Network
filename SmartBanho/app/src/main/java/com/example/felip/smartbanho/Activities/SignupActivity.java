@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
     private final String ESP8266 = "esp8266";
     private final String CREDENTIALS_URL = "/createCredentials?email=";
     private Boolean createCredentialsFlag = false;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,9 @@ public class SignupActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+        progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Account...");
     }
 
     public void signup() {
@@ -87,6 +92,8 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        progressDialog.show();
+
         _signupButton.setEnabled(false);
         new CreatedCredentials(this).execute();
 
@@ -94,42 +101,29 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onAuthorizedSignup() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
-
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
+        progressDialog.dismiss();
+        _signupButton.setEnabled(false);
+        onSignupSuccess();
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
     }
 
 
     public void onSignupSuccess() {
-        _signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
+        Intent showerIO = new Intent(SignupActivity.this, ShowerIO.class);
+        startActivity(showerIO);
         finish();
     }
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _signupButton.setEnabled(true);
+        progressDialog.dismiss();
     }
 
     public boolean validate() {
@@ -173,7 +167,7 @@ public class SignupActivity extends AppCompatActivity {
         return valid;
     }
 
-    private class CreatedCredentials extends AsyncTask<Void, String, String> {
+    private class CreatedCredentials extends AsyncTask<Void, Void, Void> {
 
         SignupActivity signupActivity;
 
@@ -182,21 +176,23 @@ public class SignupActivity extends AppCompatActivity {
             this.signupActivity = signupActivity;
         }
 
-        @Override
-        protected void onPostExecute(String result) {
+
+        protected void onRequestFinished() {
             if (signupActivity.createCredentialsFlag == true) {
-                onAuthorizedSignup();
+                signupActivity.onAuthorizedSignup();
             } else {
-                onSignupFailed();
+                signupActivity.onSignupFailed();
             }
         }
 
         @Override
-        protected String doInBackground(Void... records) {
+        protected Void doInBackground(Void... records) {
+
             Log.d("SignupActivity Class", "Sending credentials to ESP8266");
             String fixedUrl = "http://";
             fixedUrl = fixedUrl + signupActivity.espIpAddress + CREDENTIALS_URL + signupActivity._emailText.getText().toString() + "&password=" + signupActivity._passwordText.getText().toString();
             Log.d("SignupActivity Class", fixedUrl);
+
             try {
                 OkHttpClient client = new OkHttpClient();
                 final Request request = new Request.Builder()
@@ -206,19 +202,24 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         e.printStackTrace();
+                        signupActivity.createCredentialsFlag = false;
                         Log.d("SignupActivity Class", "The server could not be contacted");
+                        onRequestFinished();
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
+                        Log.d("SignupActivity Class", "The request to create credentials went on success!");
                         signupActivity.createCredentialsFlag = true;
+                        onRequestFinished();
                     }
                 });
             } catch (Exception e) {
                 Log.d("SignupActivity Class", e.getMessage());
                 throw e;
             }
-            return "done";
+
+            return null;
         }
     }
 }

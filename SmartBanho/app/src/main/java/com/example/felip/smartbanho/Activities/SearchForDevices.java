@@ -104,8 +104,8 @@ public class SearchForDevices extends AppCompatActivity {
         } else {
 //            Intent showerIO = new Intent(SearchForDevices.this, ShowerIO.class);
 //            startActivity(showerIO);
-            Intent loginAcitivty = new Intent(SearchForDevices.this, LoginActivity.class);
-            startActivity(loginAcitivty);
+            Intent loginActivity = new Intent(SearchForDevices.this, LoginActivity.class);
+            startActivity(loginActivity);
             finish();
         }
     }
