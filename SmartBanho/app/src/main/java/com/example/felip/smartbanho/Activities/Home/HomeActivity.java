@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Activities;
+package com.example.felip.smartbanho.Activities.Home;
 
 import android.content.Intent;
 import android.os.Bundle;

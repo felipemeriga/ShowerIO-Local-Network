@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Activities;
+package com.example.felip.smartbanho.Activities.Home;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
+import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
+import com.example.felip.smartbanho.Activities.LoginActivity;
 import com.example.felip.smartbanho.Process.ScanIpAddressImpl;
 import com.example.felip.smartbanho.R;
 import com.github.ybq.android.spinkit.style.WanderingCubes;
@@ -102,8 +104,6 @@ public class SearchForDevices extends AppCompatActivity {
             startActivity(displayMessage);
             finish();
         } else {
-//            Intent showerIO = new Intent(SearchForDevices.this, ShowerIO.class);
-//            startActivity(showerIO);
             Intent loginActivity = new Intent(SearchForDevices.this, LoginActivity.class);
             startActivity(loginActivity);
             finish();

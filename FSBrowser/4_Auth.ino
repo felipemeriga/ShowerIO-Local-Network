@@ -82,7 +82,7 @@ String checkCredentials(String email, String password) {
 }
 
 String checkExistance() {
-  File z = SPIFFS.open("/penis.txt", "r");
+  File z = SPIFFS.open("/pass.txt", "r");
   String existance;
   String p = "";
   p = z.readStringUntil('\n');

@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Activities;
+package com.example.felip.smartbanho.Activities.ShowerIO;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.example.felip.smartbanho.Activities.Home.SearchForDevices;
 import com.example.felip.smartbanho.R;
 
 

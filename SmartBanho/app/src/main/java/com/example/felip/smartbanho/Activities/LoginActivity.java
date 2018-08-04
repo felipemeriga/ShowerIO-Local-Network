@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.felip.smartbanho.Activities.LoginService.LoginService;
+import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
 
 import java.io.IOException;
@@ -28,29 +30,37 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
+
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private SharedPreferences sharedPreferences;
     private final String ESP8266 = "esp8266";
     private static String EMAIL;
     private static String PASSWORD;
-    private String espIpAddress;
+    public String espIpAddress;
     private String fixedUrl = "http://";
-    private final String AUTHENTICATION_URL = "/auth?password=";
-    private Boolean authenticate_result = false;
+    private final String AUTHENTICATION_URL = "/verifyCredentials?email=";
+    private final String VERIFICATION_URL = "/verifyAccountExistance";
+    public Boolean authenticate_result = false;
+    public String failedAuthResult;
+    public Boolean existingAccount = false;
+    private LoginService loginService;
 
     @BindView(R.id.input_email)
-    EditText _emailText;
+    public EditText _emailText;
     @BindView(R.id.input_password)
-    EditText _passwordText;
+    public EditText _passwordText;
     @BindView(R.id.btn_login)
     Button _loginButton;
     @BindView(R.id.link_signup)
     TextView _signupLink;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loginService = new LoginService();
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -87,6 +97,13 @@ public class LoginActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+
+        progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        _signupLink.setEnabled(false);
+        loginService.new CheckExistanceAccounts(this).execute();
     }
 
     public void login() {
@@ -96,34 +113,31 @@ public class LoginActivity extends AppCompatActivity {
             onLoginFailed();
             return;
         }
-
+        progressDialog.show();
         _loginButton.setEnabled(false);
-        new ValidateCredentials(this).execute();
+        loginService. new ValidateCredentials(this).execute();
 
     }
 
     public void onPostAuthenticate() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        progressDialog.dismiss();
+        onLoginSuccess();
+    }
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+    public void onFailedPostAuthenticate() {
+        if (failedAuthResult.equals("EMAIL")) {
+            _emailText.setError("enter a valid email address");
+            Log.d("LoginActivity Class", "Wrong Email");
+            onLoginFailed();
+        } else if (failedAuthResult.equals("PASSWORD")) {
+            _passwordText.setError("enter a valid password");
+            Log.d("LoginActivity Class", "Wrong Password");
+            onLoginFailed();
+        }
     }
 
 
@@ -146,13 +160,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
+        Intent showerIO = new Intent(LoginActivity.this, ShowerIO.class);
+        startActivity(showerIO);
+        finish();
         finish();
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
+        progressDialog.dismiss();
         _loginButton.setEnabled(true);
     }
 
@@ -179,47 +195,13 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
-    private class ValidateCredentials extends AsyncTask<Void, String, String> {
-
-        LoginActivity loginActivity;
-
-        public ValidateCredentials(LoginActivity loginActivity) {
-            super();
-            this.loginActivity = loginActivity;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (loginActivity.authenticate_result == true) {
-                onPostAuthenticate();
-            } else {
-                onLoginFailed();
-            }
-        }
-
-        @Override
-        protected String doInBackground(Void... records) {
-            fixedUrl = "http://";
-            fixedUrl = fixedUrl + loginActivity.espIpAddress + AUTHENTICATION_URL + loginActivity._passwordText.getText().toString();
-            OkHttpClient client = new OkHttpClient();
-            final Request request = new Request.Builder()
-                    .url(fixedUrl)
-                    .build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = response.body().toString();
-                    if (result.equals("Y")) {
-                        loginActivity.authenticate_result = true;
-                    }
-                }
-            });
-            return "done";
+    public void accountExistance() {
+        if (authenticate_result == true) {
+            _signupLink.setEnabled(false);
+        } else {
+            _signupLink.setEnabled(true);
         }
     }
+
+
 }

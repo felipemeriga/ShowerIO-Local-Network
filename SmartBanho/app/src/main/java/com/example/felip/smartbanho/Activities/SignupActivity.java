@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
 
 import java.io.IOException;
@@ -108,7 +108,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // TODO: Implement your own signup logic here.
         progressDialog.dismiss();
-        _signupButton.setEnabled(false);
+        _signupButton.setEnabled(true);
         onSignupSuccess();
 
     }
@@ -178,11 +178,16 @@ public class SignupActivity extends AppCompatActivity {
 
 
         protected void onRequestFinished() {
-            if (signupActivity.createCredentialsFlag == true) {
-                signupActivity.onAuthorizedSignup();
-            } else {
-                signupActivity.onSignupFailed();
-            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (signupActivity.createCredentialsFlag == true) {
+                        signupActivity.onAuthorizedSignup();
+                    } else {
+                        signupActivity.onSignupFailed();
+                    }
+                }
+            });
         }
 
         @Override

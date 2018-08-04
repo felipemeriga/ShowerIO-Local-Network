@@ -184,7 +184,7 @@ void verifyCredentials() {
   String email = String(server.arg("email"));
   String checkAuth = checkCredentials(email, password);
   if (checkAuth != "ERROR") {
-    DBG_OUTPUT_PORT.println("Credentials Saved Successfully!");
+    DBG_OUTPUT_PORT.println("Credentials checked successfully!");
     server.send(200, "text/plain", checkAuth);
   } else {
     server.send(500 , "text/plain", checkAuth );

@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/back_def"
     android:gravity="center"
-    tools:context=".Activities.DisplayMessageActivity">
+    tools:context=".Activities.Error.DisplayMessageActivity">
 
 
     <Button
