@@ -94,6 +94,7 @@ void setup(void) {
     minutos_pausa = armazenado;
   }
 
+  server.on ( "/dropCredentials", dropCredentials);
   server.on ( "/verifyAccountExistance", verifyAccountExistance);
   server.on ( "/verifyCredentials", verifyCredentials);
   server.on ( "/createCredentials", createCredentials);

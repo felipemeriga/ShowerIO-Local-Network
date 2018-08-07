@@ -11,28 +11,14 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.219"
-        app:srcCompat="@mipmap/shower" />
+        app:layout_constraintVertical_bias="0.063"
+        app:srcCompat="@drawable/showerlogo" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ShowerIO"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:typeface="normal"
-        app:fontFamily="casual"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.112" />
+
 
 </android.support.constraint.ConstraintLayout>

@@ -197,6 +197,12 @@ void verifyAccountExistance() {
   server.send(200, "text/plain", existance);
 }
 
+void dropCredentials() {
+  DBG_OUTPUT_PORT.println("Droping actual credentials");
+  dropStoredCredentials();
+  server.send(200, "text/plain", "DROPPED");
+}
+
 
 
 

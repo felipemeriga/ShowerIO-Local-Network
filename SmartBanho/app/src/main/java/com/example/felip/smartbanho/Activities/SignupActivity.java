@@ -106,6 +106,12 @@ public class SignupActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
+        //Saving on shared preferences to further authentication
+        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+        editor.putString("email", email);
+        editor.putString("password", password);
+        editor.apply();
+
         // TODO: Implement your own signup logic here.
         progressDialog.dismiss();
         _signupButton.setEnabled(true);

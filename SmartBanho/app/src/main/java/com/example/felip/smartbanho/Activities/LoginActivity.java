@@ -2,9 +2,8 @@ package com.example.felip.smartbanho.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,15 +18,8 @@ import com.example.felip.smartbanho.Activities.LoginService.LoginService;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -115,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         progressDialog.show();
         _loginButton.setEnabled(false);
-        loginService. new ValidateCredentials(this).execute();
+        loginService.new ValidateCredentials(this).execute();
 
     }
 
@@ -123,6 +115,10 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+
+        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+        editor.putString("email", email);
+        editor.putString("password", password);
 
         progressDialog.dismiss();
         onLoginSuccess();
@@ -196,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void accountExistance() {
-        if (authenticate_result == true) {
+        if (existingAccount == true) {
             _signupLink.setEnabled(false);
         } else {
             _signupLink.setEnabled(true);

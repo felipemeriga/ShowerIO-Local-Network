@@ -15,10 +15,10 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_height="160dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/shower" />
+            android:src="@drawable/showerlogo" />
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout

@@ -98,5 +98,13 @@ String checkExistance() {
 }
 
 
+void dropStoredCredentials() {
+  DBG_OUTPUT_PORT.println("Cleaning last credentials");
+  SPIFFS.remove("/email.txt");
+  SPIFFS.remove("/pass.txt");
+
+}
+
+
 
 
