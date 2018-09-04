@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Activities.LoginService;
+package com.example.felip.smartbanho.Activities.Rest;
 
 import android.os.AsyncTask;
 import android.util.Log;
