@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.felip.smartbanho.Activities.Rest.LoginService;
+import com.example.felip.smartbanho.Rest.LoginService;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
 
