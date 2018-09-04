@@ -9,6 +9,7 @@
 #include <Ticker.h> 
 #include <WiFiManager.h>
 #include <ESP8266mDNS.h>
+#include <ArduinoJson.h>
 
 //const byte DNS_PORT = 53;
 MDNSResponder mdns;
@@ -78,6 +79,7 @@ const char* host = "esp8266fs";
 ESP8266WebServer server(80);
 //holds the current upload
 File fsUploadFile;
+
 
 
 //Function prototypes

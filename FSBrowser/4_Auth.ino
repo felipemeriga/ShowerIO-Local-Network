@@ -8,7 +8,7 @@ void testCredentials() {
     DBG_OUTPUT_PORT.println("file open failed");
   }
   String e = f.readStringUntil('\n');
-  Serial.println(e);
+  DBG_OUTPUT_PORT.println(e);
 
 
   File z = SPIFFS.open("/pass.txt", "r");
@@ -17,8 +17,38 @@ void testCredentials() {
   }
 
   String p = z.readStringUntil('\n');
-  Serial.println(p);
+  DBG_OUTPUT_PORT.println(p);
 
+
+}
+
+String checkName() {
+  String savedName;
+  DBG_OUTPUT_PORT.println("Getting device name");
+  File f = SPIFFS.open("/name.txt", "r++");
+  if (!f) {
+    DBG_OUTPUT_PORT.println("file open failed");
+  }
+  savedName = f.readStringUntil('\n');
+  DBG_OUTPUT_PORT.println("Device name: " + savedName);
+  return savedName;
+}
+
+boolean createName(String showerName) {
+  boolean processFlag = true;
+  DBG_OUTPUT_PORT.println("Cleaning last name");
+
+  SPIFFS.remove("/name.txt");
+
+  File f = SPIFFS.open("/name.txt", "w+");
+  if (!f) {
+    processFlag = false;
+    DBG_OUTPUT_PORT.println("file open failed");
+  }
+  DBG_OUTPUT_PORT.println("Saving name");
+  f.print(showerName);
+
+  return processFlag;
 
 }
 
@@ -63,7 +93,7 @@ String checkCredentials(String email, String password) {
     DBG_OUTPUT_PORT.println("file open failed");
   }
   String e = f.readStringUntil('\n');
-  Serial.println(e);
+  DBG_OUTPUT_PORT.println(e);
   if (!email.equals(e)) {
     processResult = "EMAIL";
   }
@@ -73,7 +103,7 @@ String checkCredentials(String email, String password) {
     DBG_OUTPUT_PORT.println("file open failed");
   }
   String p = z.readStringUntil('\n');
-  Serial.println(p);
+  DBG_OUTPUT_PORT.println(p);
   if (!password.equals(p)) {
     processResult = "PASSWORD";
   }

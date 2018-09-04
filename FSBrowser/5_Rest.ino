@@ -1,12 +1,30 @@
 //REST FUNCTIONS .INO FILE
+#include <ArduinoJson.h>
 
 void check() {
+  String espVersion = "ShowerIO";
   DBG_OUTPUT_PORT.println("The ESP8266 server was discovered by an app");
-  String espVersion = "showerIO";
   String ip = WiFi.localIP().toString();
   DBG_OUTPUT_PORT.println(espVersion);
   DBG_OUTPUT_PORT.println(WiFi.localIP());
-  server.send(200, "text/plain", ip );
+  
+  String deviceName = checkName();
+  String root = "{\"name\": " + deviceName + "," ;
+  root = root + "\"ip\": \"" + ip + "\"}" ;
+
+  server.send(200, "application/json", root );
+}
+
+void nameYourDevice() {
+  DBG_OUTPUT_PORT.println("A new name for this device is being set");
+  String showerName = String(server.arg("name"));
+
+  if (createName(showerName)) {
+    DBG_OUTPUT_PORT.println("Name: " + showerName + " created successfully!");
+    server.send(200, "text/plain", "TRUE");
+  } else {
+    server.send(500 , "text/plain", "FALSE" );
+  }
 }
 
 
@@ -176,7 +194,6 @@ void createCredentials() {
     server.send(500 , "text/plain", "FALSE" );
   }
 }
-
 
 void verifyCredentials() {
   DBG_OUTPUT_PORT.println("Checking credentials");
