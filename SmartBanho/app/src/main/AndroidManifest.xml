@@ -28,13 +28,18 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_search_for_devices"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name="com.example.felip.smartbanho.Activities.LoginActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="com.example.felip.smartbanho.Activities.SignupActivity" android:theme="@style/AppTheme.Dark" />
-
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".Activities.SignupActivity"
+            android:theme="@style/AppTheme.Dark" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".Activities.ShowerIO.ShowerList"></activity>
     </application>
 
 </manifest>
