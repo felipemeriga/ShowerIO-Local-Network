@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_row_background">
+
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="@dimen/ic_delete"
+            android:layout_height="@dimen/ic_delete"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:src="@drawable/showerRecyler" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:layout_toLeftOf="@id/delete_icon"
+            android:text="@string/delete"
+            android:textColor="#fff"
+            android:textSize="13dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="@dimen/padd_10">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:textColor="@color/device_name"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/language_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="5dp"
+            android:text="@string/ip_label"
+            android:textColor="@color/device_name"
+            android:textSize="12dp" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
