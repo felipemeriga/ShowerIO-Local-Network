@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
 import com.example.felip.smartbanho.Activities.LoginActivity;
+import com.example.felip.smartbanho.Activities.ShowerIO.ShowerListActivity;
 import com.example.felip.smartbanho.Process.ScanIpAddressImpl;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.Rest.DeviceService;
@@ -91,11 +92,11 @@ public class SearchForDevices extends AppCompatActivity {
             startActivity(displayMessage);
             finish();
         } else {
-            Intent loginActivity = new Intent(SearchForDevices.this, LoginActivity.class);
+            Intent showerListActivity = new Intent(SearchForDevices.this, ShowerListActivity.class);
             //Serializing the object to json, to pass between the activities
             String showerArrayAsString = new Gson().toJson(showers);
-            loginActivity.putExtra("showerDevices", showerArrayAsString);
-            startActivity(loginActivity);
+            showerListActivity.putExtra("showerDevices", showerArrayAsString);
+            startActivity(showerListActivity);
             finish();
 
             //How to bring back to java bean
