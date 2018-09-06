@@ -5,7 +5,8 @@
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.ShowerIO.ShowerList">
+    android:background="@drawable/back_def"
+    tools:context=".Activities.ShowerIO.ShowerListActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -23,6 +24,6 @@
 
 
 
-<!--    <include layout="@layout/wafer_main"/>-->
+   <include layout="@layout/shower_main_recycler"/>
 
 </android.support.design.widget.CoordinatorLayout>

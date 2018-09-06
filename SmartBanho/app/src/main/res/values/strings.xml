@@ -6,7 +6,8 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="delete">DELETE</string>
+    <string name="iniciar">Iniciar!</string>
     <string name="ip_label">Ip Address: </string>
+    <string name="list_showers">Lista de Dispositivos: </string>
 
 </resources>

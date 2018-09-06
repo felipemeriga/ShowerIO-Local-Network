@@ -17,7 +17,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padd_10"
-            android:src="@drawable/showerRecyler" />
+            android:src="@drawable/showerecyler" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padd_10"
             android:layout_toLeftOf="@id/delete_icon"
-            android:text="@string/delete"
+            android:text="@string/iniciar"
             android:textColor="#fff"
             android:textSize="13dp" />
 
@@ -35,7 +35,7 @@
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="@android:color/white"
         android:padding="@dimen/padd_10">
 
         <TextView
@@ -46,18 +46,29 @@
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
             android:textColor="@color/device_name"
-            android:textSize="17dp"
+            android:textSize="27dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/language_label"
+            android:id="@+id/ip_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="5dp"
             android:text="@string/ip_label"
             android:textColor="@color/device_name"
-            android:textSize="12dp" />
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/ip_label"
+            android:textColor="@color/device_name"
+            android:textSize="17dp" />
 
 
     </RelativeLayout>

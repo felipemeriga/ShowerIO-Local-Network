@@ -39,7 +39,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Activities.ShowerIO.ShowerList"></activity>
+        <activity android:name=".Activities.ShowerIO.ShowerListActivity"></activity>
     </application>
 
 </manifest>
