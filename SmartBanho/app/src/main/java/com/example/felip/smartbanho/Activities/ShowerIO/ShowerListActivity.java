@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -30,6 +31,7 @@ import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.Utils.CredentialsUtils;
 import com.example.felip.smartbanho.Utils.ServerCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
+import com.github.ybq.android.spinkit.style.WanderingCubes;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -45,6 +47,8 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
     private CredentialsUtils credentialsUtils;
     private RequestQueue requestQueue;
     private final String SHOWERIO = "ShowerIO";
+    private ProgressBar progressBar;
+    private Toolbar toolbar;
 
 
     @Override
@@ -54,6 +58,13 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_shower_list);
+
+        //Instanciating progressBar when a user selects an device
+        progressBar = (ProgressBar) findViewById(R.id.spin_kit);
+        WanderingCubes wanderingCubes = new WanderingCubes();
+        progressBar.setIndeterminateDrawable(wanderingCubes);
+        progressBar.setVisibility(View.GONE);
+        toolbar = findViewById(R.id.toolbar);
 
         Log.d("ShowerListAcitivty", "onCreate(): Defining and setting Toolbar title and configurations");
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -124,7 +135,9 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
             SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
             editor.putString("actualDeviceIp", ipAddres);
             editor.apply();
-
+            progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
             credentialsUtils.hasAnyCredentials(deviceBasePath, requestQueue, new ServerCallback() {
                 @Override
                 public void onServerCallback(Boolean status, String response) {
@@ -143,6 +156,9 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Não foi possível efetuar uma comunicação com o servidor, reinicie o aplicativo", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        toolbar.setVisibility(View.VISIBLE);
                     }
                 }
             });
