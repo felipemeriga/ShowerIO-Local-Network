@@ -51,11 +51,6 @@ public class SearchForDevices extends AppCompatActivity {
 
         setContentView(R.layout.activity_search_for_devices);
 
-/*        Use this for debugging to clear the SharedPreferences
-        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
-        editor.putString("ip", null);
-        editor.apply();*/
-
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.spin_kit);
         WanderingCubes wanderingCubes = new WanderingCubes();
         progressBar.setIndeterminateDrawable(wanderingCubes);
@@ -99,9 +94,6 @@ public class SearchForDevices extends AppCompatActivity {
             startActivity(showerListActivity);
             finish();
 
-            //How to bring back to java bean
-/*            String arrayAsString = getIntent().getExtras().getString("showerDevices");
-            List<ShowerDevice> list = Arrays.asList(new Gson().fromJson(arrayAsString, ShowerDevice[].class));*/
         }
     }
 }

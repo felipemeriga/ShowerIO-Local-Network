@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private SharedPreferences sharedPreferences;
-    private final String ESP8266 = "esp8266";
+    private final String SHOWERIO = "ShowerIO";
     private static String EMAIL;
     private static String PASSWORD;
     public String espIpAddress;
@@ -58,10 +59,10 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        sharedPreferences = getSharedPreferences(ESP8266, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
         EMAIL = sharedPreferences.getString("email", null);
         PASSWORD = sharedPreferences.getString("password", null);
-        espIpAddress = sharedPreferences.getString("ip", null);
+        espIpAddress = sharedPreferences.getString("actualDeviceIp", null);
 
         if (EMAIL != null) {
             _emailText.setText(EMAIL);
@@ -116,10 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
-        editor.putString("email", email);
-        editor.putString("password", password);
-
         progressDialog.dismiss();
         onLoginSuccess();
     }
@@ -156,16 +153,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        Intent showerIO = new Intent(LoginActivity.this, ShowerIO.class);
+
+        SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
+        editor.putString("email", _emailText.getText().toString());
+        editor.putString("password", _passwordText.getText().toString());
+        editor.putBoolean("authorization",true);
+        editor.apply();
+
+        // TODO - Open the ShowerIO detail or ShowerIO depending the authorization status
+/*        Intent showerIO = new Intent(LoginActivity.this, ShowerIO.class);
         startActivity(showerIO);
         finish();
-        finish();
+        finish();*/
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
         progressDialog.dismiss();
         _loginButton.setEnabled(true);
+
+        SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
+        editor.putBoolean("authorization",true);
+        editor.apply();
     }
 
     public boolean validate() {

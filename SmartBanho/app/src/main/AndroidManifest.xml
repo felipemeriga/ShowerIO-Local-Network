@@ -39,7 +39,10 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Activities.ShowerIO.ShowerListActivity"></activity>
+        <activity
+            android:name=".Activities.ShowerIO.ShowerListActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".Activities.ShowerIO.ShowerDetailActivity"></activity>
     </application>
 
 </manifest>

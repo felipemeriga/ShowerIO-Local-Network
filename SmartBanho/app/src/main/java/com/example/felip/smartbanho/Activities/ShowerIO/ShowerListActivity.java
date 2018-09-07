@@ -1,5 +1,7 @@
 package com.example.felip.smartbanho.Activities.ShowerIO;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -13,11 +15,20 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
+import com.example.felip.smartbanho.Activities.Home.SearchForDevices;
+import com.example.felip.smartbanho.Activities.LoginActivity;
 import com.example.felip.smartbanho.Adapter.ShowerListAdapter;
 import com.example.felip.smartbanho.Helper.RecyclerItemTouchHelper;
 import com.example.felip.smartbanho.R;
+import com.example.felip.smartbanho.Utils.CredentialsUtils;
+import com.example.felip.smartbanho.Utils.ServerCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
 
@@ -31,11 +42,17 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
     private CoordinatorLayout coordinatorLayout;
     public List<ShowerDevice> showerDevicesList;
     private ShowerListAdapter mAdapter;
+    private CredentialsUtils credentialsUtils;
+    private RequestQueue requestQueue;
+    private final String SHOWERIO = "ShowerIO";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_shower_list);
 
         Log.d("ShowerListAcitivty", "onCreate(): Defining and setting Toolbar title and configurations");
@@ -71,27 +88,27 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
         Log.i("ShowerListAcitivty", "onCreate(): Calling fetchDevicesInUI, to populate RecyclerView ");
-
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        credentialsUtils = new CredentialsUtils();
+        helpUser();
         fetchDevicesInUI();
     }
 
-    public void fetchDevicesInUI(){
-/*        if(showerDevicesList.size()==0){
-            Log.d("ShowerListAcitivty", "fetchDevicesInUI(): Any devices were found, calling toast to alert user");
-            Toast.makeText(getApplicationContext(), "Nenhum dispositivo foi adicionado, efetue uma nova busca", Toast.LENGTH_LONG).show();
-            return;
-        }*/
+    public void fetchDevicesInUI() {
         showerDevicesList.clear();
 
         String showersArrayAsString = getIntent().getExtras().getString("showerDevices");
         List<ShowerDevice> list = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
         showerDevicesList.addAll(list);
-        Log.i("ShowerListAcitivty", "fetchDevicesInUI(): Adding found devices List<ShowerDevice> and notifying Adapter that new data was inserted");
-        mAdapter.notifyDataSetChanged();
+        if (list.size() == 0) {
+            Log.d("ShowerListAcitivty", "fetchDevicesInUI(): Any devices were found, calling toast to alert user");
+            Toast.makeText(getApplicationContext(), "Nenhum dispositivo foi adicionado, efetue uma nova busca", Toast.LENGTH_LONG).show();
+
+        } else {
+            Log.i("ShowerListAcitivty", "fetchDevicesInUI(): Adding found devices List<ShowerDevice> and notifying Adapter that new data was inserted");
+            mAdapter.notifyDataSetChanged();
+        }
     }
-
-
-
 
 
     //As ShowerListActivity implements RecyclerItemTouchHelperListener, the method onSwiped is being Overrided
@@ -100,29 +117,44 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
         if (viewHolder instanceof ShowerListAdapter.MyViewHolder) {
             // get the removed shower name to display it in snack bar
             String name = showerDevicesList.get(viewHolder.getAdapterPosition()).getName();
+            String ipAddres = showerDevicesList.get(viewHolder.getAdapterPosition()).getIp();
+            String deviceBasePath = "http://" + ipAddres;
 
-            // TODO - Create the transition between the detail Activity
-/*            // backup of removed shower for undo purpose
-            final ShowerDevice deletedShower = showerDevicesList.get(viewHolder.getAdapterPosition());
-            final int deletedIndex = viewHolder.getAdapterPosition();
+            //Adding the selected device IP to sharedPreferences
+            SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
+            editor.putString("actualDeviceIp", ipAddres);
+            editor.apply();
 
-            // remove the wafer from recycler view
-            mAdapter.removeWafer(viewHolder.getAdapterPosition());
-
-            // showing snack bar with Undo option
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, name + " removed from wafer list!", Snackbar.LENGTH_LONG);
-            snackbar.setAction("UNDO", new View.OnClickListener() {
+            credentialsUtils.hasAnyCredentials(deviceBasePath, requestQueue, new ServerCallback() {
                 @Override
-                public void onClick(View view) {
-
-                    // undo is selected, restore the deleted item
-                    mAdapter.restoreWafer(deletedWafer, deletedIndex);
+                public void onServerCallback(Boolean status, String response) {
+                    if (status == true) {
+                        Log.i("ShowerListActivity", "onServerCallback(), request to credentials went successful");
+                        if (response.equals("Y")) {
+                            Log.i("ShowerListActivity", "onServerCallback(), server has credentials, opening LoginActivity");
+                            Intent loginActivity = new Intent(ShowerListActivity.this, LoginActivity.class);
+                            startActivity(loginActivity);
+                            finish();
+                        } else if (response.equals("N")) {
+                            Log.i("ShowerListActivity", "onServerCallback(), server has no credentials, opening ShowerDetailActivity");
+                            Intent showerDetailActivity = new Intent(ShowerListActivity.this, ShowerDetailActivity.class);
+                            startActivity(showerDetailActivity);
+                            finish();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Não foi possível efetuar uma comunicação com o servidor, reinicie o aplicativo", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();*/
         }
+    }
+
+    private void helpUser() {
+        // showing snack bar to help user to use the application
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Deslize para esquerda para escolher um chuveiro!", Snackbar.LENGTH_LONG)
+                .setDuration(8000);
+        snackbar.show();
     }
 
 }
