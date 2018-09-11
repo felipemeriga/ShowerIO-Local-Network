@@ -11,7 +11,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:background="@drawable/bg"
-        android:weightSum="10"
+        android:weightSum="5"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -37,7 +37,7 @@
             android:rowCount="3"
             android:alignmentMode="alignMargins"
             android:columnOrderPreserved="false"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="14dp"
@@ -66,13 +66,13 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:src="@drawable/play"
+                        android:src="@drawable/ic_play_circle_filled_black_24dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="Começar"
+                        android:text="@string/start"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="Nomear"
+                        android:text="@string/setName"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
@@ -147,14 +147,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-<!--                    <ImageView
-                        android:src="@drawable/lovely_time"
+                    <ImageView
+                        android:src="@drawable/ic_lock_black_24dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />-->
+                        android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="Senha"
+                        android:text="@string/password"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
@@ -186,14 +186,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-<!--                    <ImageView
-                        android:src="@drawable/team_time"
+                    <ImageView
+                        android:src="@drawable/ic_undo_black_24dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />-->
+                        android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="Resetar"
+                        android:text="@string/reset"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
@@ -228,14 +228,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-<!--                    <ImageView
-                        android:src="@drawable/friends"
+                    <ImageView
+                        android:src="@drawable/ic_play_circle_filled_black_24dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />-->
+                        android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="Reiniciar"
+                        android:text="@string/restart"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
@@ -267,14 +267,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-<!--                    <ImageView
-                        android:src="@drawable/calendar"
+                    <ImageView
+                        android:src="@drawable/ic_exit_to_app_black_24dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />-->
+                        android:layout_height="wrap_content" />
 
                     <TextView
-                        android:text="Sair"
+                        android:text="@string/quit"
                         android:textAlignment="center"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"

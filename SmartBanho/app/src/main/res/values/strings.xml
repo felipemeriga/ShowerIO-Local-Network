@@ -9,5 +9,13 @@
     <string name="iniciar">Iniciar!</string>
     <string name="ip_label">Ip Address: </string>
     <string name="list_showers">Lista de Dispositivos </string>
+    <string name="start">Começar </string>
+    <string name="setName">Nomear </string>
+    <string name="password">Senha </string>
+    <string name="reset">Resetar </string>
+    <string name="restart">Reiniciar </string>
+    <string name="quit">Sair </string>
+
+
 
 </resources>
