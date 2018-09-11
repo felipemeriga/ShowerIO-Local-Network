@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.Home.HomeActivity">
+        <activity android:name=".Activities.ShowerIO.ShowerDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +42,8 @@
         <activity
             android:name=".Activities.ShowerIO.ShowerListActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".Activities.ShowerIO.ShowerDetailActivity"></activity>
+        <activity android:name=".Activities.Home.HomeActivity"
+            android:theme="@style/AppTheme.Dark"></activity>
     </application>
 
 </manifest>
