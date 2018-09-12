@@ -15,7 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.Home.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".Activities.Error.DisplayMessageActivity" />
         <activity android:name=".Activities.ShowerIO.ShowerIO" />
@@ -26,7 +30,7 @@
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".Activities.LoginActivity"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".Activities.SignupActivity"
             android:theme="@style/AppTheme.Dark" />
@@ -40,14 +44,7 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".Activities.ShowerIO.ShowerDetailActivity"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+            android:theme="@style/AppTheme"></activity>
 
 
     </application>
