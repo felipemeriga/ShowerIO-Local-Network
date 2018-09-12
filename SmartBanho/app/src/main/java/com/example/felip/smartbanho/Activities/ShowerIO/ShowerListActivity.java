@@ -127,13 +127,14 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof ShowerListAdapter.MyViewHolder) {
             // get the removed shower name to display it in snack bar
+            final ShowerDevice selectedDevice = showerDevicesList.get(viewHolder.getAdapterPosition());
             String name = showerDevicesList.get(viewHolder.getAdapterPosition()).getName();
-            String ipAddres = showerDevicesList.get(viewHolder.getAdapterPosition()).getIp();
-            String deviceBasePath = "http://" + ipAddres;
+
+            String deviceBasePath = "http://" + selectedDevice.getIp();
 
             //Adding the selected device IP to sharedPreferences
             SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
-            editor.putString("actualDeviceIp", ipAddres);
+            editor.putString("actualDeviceIp", selectedDevice.getIp());
             editor.apply();
             progressBar.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
@@ -150,7 +151,10 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
                             finish();
                         } else if (response.equals("N")) {
                             Log.i("ShowerListActivity", "onServerCallback(), server has no credentials, opening ShowerDetailActivity");
+                            String selectedDeviceAsArray = new Gson().toJson(selectedDevice);
+
                             Intent showerDetailActivity = new Intent(ShowerListActivity.this, ShowerDetailActivity.class);
+                            showerDetailActivity.putExtra("device", selectedDeviceAsArray);
                             startActivity(showerDetailActivity);
                             finish();
                         }

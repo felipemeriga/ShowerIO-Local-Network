@@ -23,17 +23,20 @@ import android.widget.ProgressBar;
 
 import com.example.felip.smartbanho.Activities.Home.SearchForDevices;
 import com.example.felip.smartbanho.R;
+import com.example.felip.smartbanho.model.ShowerDevice;
+import com.google.gson.Gson;
 
 
 public class ShowerIO extends AppCompatActivity {
 
-    ProgressBar superProgressBar;
-    ImageView superImageView;
-    WebView superWebview;
-    LinearLayout superLinerLayout;
+    private ProgressBar superProgressBar;
+    private ImageView superImageView;
+    private WebView superWebview;
+    private LinearLayout superLinerLayout;
     private SharedPreferences sharedPreferences;
     public static final String ESP8266 = "esp8266";
     private String showerIOIpAddres = "http://";
+    private ShowerDevice device;
 
 
     @Override
@@ -49,8 +52,10 @@ public class ShowerIO extends AppCompatActivity {
         superWebview = findViewById(R.id.myWebView);
         superLinerLayout = findViewById(R.id.myLinearLayout);
 
-        sharedPreferences = getSharedPreferences(ESP8266, MODE_PRIVATE);
-        showerIOIpAddres = showerIOIpAddres + sharedPreferences.getString("ip", null) + "/index.html";
+        String selectedShower = getIntent().getExtras().getString("device");
+        ShowerDevice device = new Gson().fromJson(selectedShower, ShowerDevice.class);
+
+        showerIOIpAddres = showerIOIpAddres + device.getIp() + "/index.html";
 
 
         superWebview.loadUrl(showerIOIpAddres);
@@ -127,11 +132,11 @@ public class ShowerIO extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (superWebview.canGoBack()) {
-            superWebview.goBack();
-        } else {
-            finish();
-        }
+        String selectedDevice = new Gson().toJson(device);
+        Intent showerDetailActivity = new Intent(ShowerIO.this, ShowerDetailActivity.class);
+        showerDetailActivity.putExtra("device", selectedDevice);
+        startActivity(showerDetailActivity);
+        finish();
     }
 
     public void onNotFoundEsp() {

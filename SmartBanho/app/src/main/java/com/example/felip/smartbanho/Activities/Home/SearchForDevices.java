@@ -76,7 +76,7 @@ public class SearchForDevices extends AppCompatActivity {
     }
 
     private void runAsyncTask() {
-        new DeviceService(this).execute();
+/*        new DeviceService(this).execute();*/
     }
 
 
