@@ -34,7 +34,7 @@ public class SearchForDevices extends AppCompatActivity {
     private String espIpAddress;
     private SharedPreferences sharedPreferences;
     public static final String ESP8266 = "esp8266";
-    public static int RETRY = 1;
+    public static int RETRY = 0;
     private static int SPLASH_TIME_OUT = 4000;
     private String fixedUrl = "http://";
     private Gson gson;
@@ -76,7 +76,7 @@ public class SearchForDevices extends AppCompatActivity {
     }
 
     private void runAsyncTask() {
-/*        new DeviceService(this).execute();*/
+        new DeviceService(this).execute();
     }
 
 

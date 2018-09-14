@@ -53,7 +53,7 @@ public class ShowerIO extends AppCompatActivity {
         superLinerLayout = findViewById(R.id.myLinearLayout);
 
         String selectedShower = getIntent().getExtras().getString("device");
-        ShowerDevice device = new Gson().fromJson(selectedShower, ShowerDevice.class);
+        device = new Gson().fromJson(selectedShower, ShowerDevice.class);
 
         showerIOIpAddres = showerIOIpAddres + device.getIp() + "/index.html";
 

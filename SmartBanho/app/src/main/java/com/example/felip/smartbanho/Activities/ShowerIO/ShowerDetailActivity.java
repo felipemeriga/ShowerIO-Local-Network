@@ -17,9 +17,11 @@ import java.util.List;
 
 public class ShowerDetailActivity extends AppCompatActivity {
 
-    GridLayout mainGrid;
-    ShowerDevice device;
-    TextView deviceTitle;
+    private GridLayout mainGrid;
+    private ShowerDevice device;
+    private TextView deviceTitle;
+    public static String selectedShower;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +34,13 @@ public class ShowerDetailActivity extends AppCompatActivity {
         setSingleEvent(mainGrid);
         //setToggleEvent(mainGrid);
 
-/*        String selectedShower = getIntent().getExtras().getString("device");
-        ShowerDevice device = new Gson().fromJson(selectedShower, ShowerDevice.class);
+        selectedShower = getIntent().getExtras().getString("device");
+        device = new Gson().fromJson(selectedShower, ShowerDevice.class);
         if (device.getName().isEmpty()) {
             deviceTitle.setText(R.string.noName);
         } else {
             deviceTitle.setText(device.getName());
-        }*/
+        }
     }
 
 
@@ -48,7 +50,6 @@ public class ShowerDetailActivity extends AppCompatActivity {
             //You can see , all child item is CardView , so we just cast object to CardView
             CardView cardView = (CardView) mainGrid.getChildAt(i);
             final int finalI = i;
-            final String selectedDeviceAsArray = new Gson().toJson(device);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,7 +57,7 @@ public class ShowerDetailActivity extends AppCompatActivity {
                     switch (finalI) {
                         case 0:
                             Intent showerIO = new Intent(ShowerDetailActivity.this, ShowerIO.class);
-                            showerIO.putExtra("device", selectedDeviceAsArray);
+                            showerIO.putExtra("device", ShowerDetailActivity.selectedShower);
                             startActivity(showerIO);
                             finish();
                             break;
@@ -64,5 +65,14 @@ public class ShowerDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        String selectedDevice = new Gson().toJson(device);
+        Intent showerDetailActivity = new Intent(ShowerDetailActivity.this, ShowerDetailActivity.class);
+        showerDetailActivity.putExtra("device", selectedDevice);
+        startActivity(showerDetailActivity);
+        finish();
     }
 }

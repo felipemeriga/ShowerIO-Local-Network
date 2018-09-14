@@ -47,7 +47,7 @@ public class DeviceService extends AsyncTask<Void, String, String> {
     @Override
     protected String doInBackground(Void... records) {
         try {
-            int timeout = 100;
+            int timeout = 50;
             for (int i = 2; i < 255; i++) {
                 String host = "";
                 host = this.searchForDevices.scanIpAddress.subnet + "." + i;
