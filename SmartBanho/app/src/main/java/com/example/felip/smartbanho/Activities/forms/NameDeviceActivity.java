@@ -24,6 +24,9 @@ import com.example.felip.smartbanho.Utils.ServerCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -51,9 +54,8 @@ public class NameDeviceActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
-        String deviceAsString = sharedPreferences.getString("actualDevice", null);
-        device = new Gson().fromJson(deviceAsString, ShowerDevice.class);
+        String selectedShower = getIntent().getExtras().getString("device");
+        device = new Gson().fromJson(selectedShower, ShowerDevice.class);
 
         progressDialog = new ProgressDialog(NameDeviceActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
@@ -87,6 +89,7 @@ public class NameDeviceActivity extends AppCompatActivity {
                         showerDetailActivity.putExtra("device", deviceAsString);
                         startActivity(showerDetailActivity);
                         finish();
+                        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                     } else {
                         Log.d("NameDeviceActivity ", " setName() - error naming device ");
                         Toast.makeText(getBaseContext(), "Erro ao criar o nome", Toast.LENGTH_LONG).show();
@@ -98,6 +101,23 @@ public class NameDeviceActivity extends AppCompatActivity {
             progressDialog.hide();
             nameButton.setEnabled(true);
         }
+
+    }
+
+    private void updateDevicesList(String name) {
+        sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
+        String showersArrayAsString = sharedPreferences.getString("listOfDevices", null);
+        List<ShowerDevice> showers = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
+        for (ShowerDevice loopDevice : showers) {
+            if (loopDevice.getIp().equals(device.getIp())) {
+                device.setName(name);
+            }
+        }
+        SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
+        String showerArrayAsString = new Gson().toJson(showers);
+        editor.putString("listOfDevices", showerArrayAsString);
+        editor.commit();
+
 
     }
 
@@ -113,5 +133,14 @@ public class NameDeviceActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent showerDetailActivity = new Intent(NameDeviceActivity.this, ShowerDetailActivity.class);
+        String deviceAsString = new Gson().toJson(device);
+        showerDetailActivity.putExtra("device", deviceAsString);
+        startActivity(showerDetailActivity);
+        finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
 }

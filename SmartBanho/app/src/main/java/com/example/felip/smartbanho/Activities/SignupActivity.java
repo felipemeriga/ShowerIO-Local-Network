@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
+import com.example.felip.smartbanho.model.ShowerDevice;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -45,10 +47,11 @@ public class SignupActivity extends AppCompatActivity {
     @BindView(R.id.link_login)
     TextView _loginLink;
     String espIpAddress;
-    private final String ESP8266 = "esp8266";
+    private final String SHOWERIO = "ShowerIO";
     private final String CREDENTIALS_URL = "/createCredentials?email=";
     private Boolean createCredentialsFlag = false;
     private ProgressDialog progressDialog;
+    private ShowerDevice device;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,8 +62,12 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
-        sharedPreferences = getSharedPreferences(ESP8266, MODE_PRIVATE);
+        //getting actual selected device
+        String selectedShower = getIntent().getExtras().getString("device");
+        device = new Gson().fromJson(selectedShower, ShowerDevice.class);
+
         espIpAddress = sharedPreferences.getString("ip", null);
+        espIpAddress = device.getIp();
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +114,7 @@ public class SignupActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         //Saving on shared preferences to further authentication
-        SharedPreferences.Editor editor = getSharedPreferences(ESP8266, MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
         editor.putString("email", email);
         editor.putString("password", password);
         editor.apply();

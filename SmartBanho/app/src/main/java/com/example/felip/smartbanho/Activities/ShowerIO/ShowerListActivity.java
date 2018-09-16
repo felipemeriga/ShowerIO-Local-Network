@@ -49,6 +49,7 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
     private final String SHOWERIO = "ShowerIO";
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -112,8 +113,17 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
         List<ShowerDevice> list = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
         showerDevicesList.addAll(list);
         if (list.size() == 0) {
-            Log.d("ShowerListAcitivty", "fetchDevicesInUI(): Any devices were found, calling toast to alert user");
-            Toast.makeText(getApplicationContext(), "Nenhum dispositivo foi adicionado, efetue uma nova busca", Toast.LENGTH_LONG).show();
+            sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
+            showersArrayAsString = sharedPreferences.getString("listOfDevices", null);
+            list = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
+            showerDevicesList.addAll(list);
+            if (list.size() == 0) {
+                Log.d("ShowerListAcitivty", "fetchDevicesInUI(): Any devices were found, calling toast to alert user");
+                Toast.makeText(getApplicationContext(), "Nenhum dispositivo foi adicionado, efetue uma nova busca", Toast.LENGTH_LONG).show();
+            } else {
+                Log.i("ShowerListAcitivty", "fetchDevicesInUI(): Adding found devices List<ShowerDevice> and notifying Adapter that new data was inserted");
+                mAdapter.notifyDataSetChanged();
+            }
 
         } else {
             Log.i("ShowerListAcitivty", "fetchDevicesInUI(): Adding found devices List<ShowerDevice> and notifying Adapter that new data was inserted");
@@ -143,20 +153,23 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
                 @Override
                 public void onServerCallback(Boolean status, String response) {
                     if (status == true) {
+                        String selectedDeviceAsString = new Gson().toJson(selectedDevice);
                         Log.i("ShowerListActivity", "onServerCallback(), request to credentials went successful");
                         if (response.equals("Y")) {
                             Log.i("ShowerListActivity", "onServerCallback(), server has credentials, opening LoginActivity");
                             Intent loginActivity = new Intent(ShowerListActivity.this, LoginActivity.class);
+                            loginActivity.putExtra("device", selectedDeviceAsString);
                             startActivity(loginActivity);
                             finish();
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                         } else if (response.equals("N")) {
                             Log.i("ShowerListActivity", "onServerCallback(), server has no credentials, opening ShowerDetailActivity");
-                            String selectedDeviceAsArray = new Gson().toJson(selectedDevice);
 
                             Intent showerDetailActivity = new Intent(ShowerListActivity.this, ShowerDetailActivity.class);
-                            showerDetailActivity.putExtra("device", selectedDeviceAsArray);
+                            showerDetailActivity.putExtra("device", selectedDeviceAsString);
                             startActivity(showerDetailActivity);
                             finish();
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Não foi possível efetuar uma comunicação com o servidor, reinicie o aplicativo", Toast.LENGTH_LONG).show();

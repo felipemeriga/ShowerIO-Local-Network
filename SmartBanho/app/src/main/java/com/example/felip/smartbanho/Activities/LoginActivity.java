@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.felip.smartbanho.Rest.LoginService;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
+import com.example.felip.smartbanho.model.ShowerDevice;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     public String failedAuthResult;
     public Boolean existingAccount = false;
     private LoginService loginService;
+    private ShowerDevice device;
 
     @BindView(R.id.input_email)
     public EditText _emailText;
@@ -57,12 +60,16 @@ public class LoginActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //getting actual selected device
+        String selectedShower = getIntent().getExtras().getString("device");
+        device = new Gson().fromJson(selectedShower, ShowerDevice.class);
+
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
         EMAIL = sharedPreferences.getString("email", null);
         PASSWORD = sharedPreferences.getString("password", null);
-        espIpAddress = sharedPreferences.getString("actualDeviceIp", null);
+        espIpAddress = device.getIp();
 
         if (EMAIL != null) {
             _emailText.setText(EMAIL);
@@ -70,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         if (PASSWORD != null) {
             _passwordText.setText(PASSWORD);
         }
+
+
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -86,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                 // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
+                String selectedDeviceAsString = new Gson().toJson(device);
+                intent.putExtra("device",selectedDeviceAsString);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }

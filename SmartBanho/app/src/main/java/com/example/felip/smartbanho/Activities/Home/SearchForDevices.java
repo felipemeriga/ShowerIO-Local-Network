@@ -35,7 +35,6 @@ public class SearchForDevices extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     public static int RETRY = 0;
     private static int SPLASH_TIME_OUT = 4000;
-    private String fixedUrl = "http://";
     private Gson gson;
     private final String SHOWERIO = "ShowerIO";
     public List<ShowerDevice> showers;
