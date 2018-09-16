@@ -21,7 +21,7 @@ import java.net.UnknownHostException;
 public class DeviceService extends AsyncTask<Void, String, String> {
 
     SearchForDevices searchForDevices;
-    public static int RETRY = 1;
+    public static int RETRY = 0;
     private String fixedUrl = "http://";
     private Gson gson;
 
@@ -47,7 +47,7 @@ public class DeviceService extends AsyncTask<Void, String, String> {
     @Override
     protected String doInBackground(Void... records) {
         try {
-            int timeout = 50;
+            int timeout = 100;
             for (int i = 2; i < 255; i++) {
                 String host = "";
                 host = this.searchForDevices.scanIpAddress.subnet + "." + i;

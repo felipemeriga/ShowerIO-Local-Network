@@ -13,7 +13,7 @@ import com.example.felip.smartbanho.model.ShowerDevice;
 
 import java.util.List;
 
-public class ShowerListAdapter  extends RecyclerView.Adapter<ShowerListAdapter.MyViewHolder> {
+public class ShowerListAdapter extends RecyclerView.Adapter<ShowerListAdapter.MyViewHolder> {
     private Context context;
     private List<ShowerDevice> showerDevices;
 
@@ -50,7 +50,12 @@ public class ShowerListAdapter  extends RecyclerView.Adapter<ShowerListAdapter.M
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         //Which showerDevice of the showerDevices will be bound setting the TextView from its current POJO attribute
         final ShowerDevice showerDevice = showerDevices.get(position);
-        holder.name.setText(showerDevice.getName());
+        String showerName;
+        if (showerDevice.getName().equals("UNAMED")) {
+            holder.name.setText("Dispositivo sem Nome");
+        } else {
+            holder.name.setText(showerDevice.getName());
+        }
         holder.ip.setText(showerDevice.getIp());
     }
 
@@ -70,7 +75,7 @@ public class ShowerListAdapter  extends RecyclerView.Adapter<ShowerListAdapter.M
 
     //PLUS-This method is called to restore an item that have been deleted that is bound to onSwipe method on ShowerListActivity
     public void restoreShowerDevice(ShowerDevice showerDevice, int position) {
-        showerDevices.add(position,showerDevice);
+        showerDevices.add(position, showerDevice);
         // notify showerDevice added by position
         notifyItemInserted(position);
     }
