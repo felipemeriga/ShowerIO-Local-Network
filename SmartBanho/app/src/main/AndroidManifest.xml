@@ -44,8 +44,8 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".Activities.ShowerIO.ShowerDetailActivity"
-            android:theme="@style/AppTheme"></activity>
-
-
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Activities.forms.NameDeviceActivity"></activity>
     </application>
+
 </manifest>
