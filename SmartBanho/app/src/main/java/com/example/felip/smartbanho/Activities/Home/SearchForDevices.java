@@ -33,11 +33,11 @@ public class SearchForDevices extends AppCompatActivity {
     private List<String> ipList;
     private String espIpAddress;
     private SharedPreferences sharedPreferences;
-    public static final String ESP8266 = "esp8266";
     public static int RETRY = 0;
     private static int SPLASH_TIME_OUT = 4000;
     private String fixedUrl = "http://";
     private Gson gson;
+    private final String SHOWERIO = "ShowerIO";
     public List<ShowerDevice> showers;
     public RequestQueue requestQueue;
 
@@ -87,9 +87,14 @@ public class SearchForDevices extends AppCompatActivity {
             startActivity(displayMessage);
             finish();
         } else {
+            //Saving on shared preferences to further authentication
+            SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
+
             Intent showerListActivity = new Intent(SearchForDevices.this, ShowerListActivity.class);
             //Serializing the object to json, to pass between the activities
             String showerArrayAsString = new Gson().toJson(showers);
+            editor.putString("listOfDevices", showerArrayAsString);
+            editor.commit();
             showerListActivity.putExtra("showerDevices", showerArrayAsString);
             startActivity(showerListActivity);
             finish();
