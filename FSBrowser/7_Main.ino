@@ -115,6 +115,7 @@ void setup(void) {
   server.on ( "/getPausedTime", getPausedTime);
   server.on ( "/reset", resetWifiManagerSettings);
   server.on ( "/createName", nameYourDevice);
+  server.on ( "/deleteName", unNameYourDevice);
 
   server.serveStatic("/", SPIFFS, "/", "max-age=86400");
 

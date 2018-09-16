@@ -7,10 +7,16 @@ void check() {
   String ip = WiFi.localIP().toString();
   DBG_OUTPUT_PORT.println(espVersion);
   DBG_OUTPUT_PORT.println(WiFi.localIP());
-  
+  String root;
   String deviceName = checkName();
-  String root = "{\"name\": " + deviceName + "," ;
-  root = root + "\"ip\": \"" + ip + "\"}" ;
+  if (deviceName.equals("")) {
+    deviceName = "UNAMED";
+    root = "{\"name\": \"" + deviceName + "\"," ;
+    root = root + "\"ip\": \"" + ip + "\"}" ;
+  } else {
+    root = "{\"name\": " + deviceName + "," ;
+    root = root + "\"ip\": \"" + ip + "\"}" ;
+  }
 
   server.send(200, "application/json", root );
 }
@@ -21,6 +27,17 @@ void nameYourDevice() {
 
   if (createName(showerName)) {
     DBG_OUTPUT_PORT.println("Name: " + showerName + " created successfully!");
+    server.send(200, "text/plain", "TRUE");
+  } else {
+    server.send(500 , "text/plain", "FALSE" );
+  }
+}
+
+void unNameYourDevice() {
+  DBG_OUTPUT_PORT.println("Deleting device name");
+
+  if (deleteName()) {
+    DBG_OUTPUT_PORT.println("Name deleted successfully!");
     server.send(200, "text/plain", "TRUE");
   } else {
     server.send(500 , "text/plain", "FALSE" );

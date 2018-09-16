@@ -52,6 +52,18 @@ boolean createName(String showerName) {
 
 }
 
+boolean deleteName(){
+  boolean processFlag = true;
+  DBG_OUTPUT_PORT.println("Cleaning last name");
+  SPIFFS.remove("/name.txt");
+  File f = SPIFFS.open("/name.txt", "w+");
+   if (!f) {
+    processFlag = false;
+    DBG_OUTPUT_PORT.println("file open failed");
+  }
+  return processFlag;
+}
+
 
 boolean saveCredentials(String email, String password) {
 
