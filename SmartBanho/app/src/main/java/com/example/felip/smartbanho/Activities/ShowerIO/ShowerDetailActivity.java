@@ -2,11 +2,15 @@ package com.example.felip.smartbanho.Activities.ShowerIO;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
 import android.support.v7.widget.CardView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.felip.smartbanho.Activities.forms.NameDeviceActivity;
@@ -25,6 +29,10 @@ public class ShowerDetailActivity extends AppCompatActivity {
     public static String selectedShower;
     private SharedPreferences sharedPreferences;
     private final String SHOWERIO = "ShowerIO";
+    private CardView cardViewPlay;
+    private Boolean nameFlag;
+    private ScrollView scrollView;
+    private ColorStateList defaultColor;
 
 
     @Override
@@ -33,6 +41,10 @@ public class ShowerDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shower_detail);
         mainGrid = (GridLayout) findViewById(R.id.mainGrid);
         deviceTitle = findViewById(R.id.textGrid);
+        cardViewPlay = findViewById(R.id.cardViewPlay);
+        scrollView = findViewById(R.id.scrollView);
+        nameFlag = false;
+        defaultColor = cardViewPlay.getCardBackgroundColor();
 
         //Set Event
         setSingleEvent(mainGrid);
@@ -40,8 +52,11 @@ public class ShowerDetailActivity extends AppCompatActivity {
 
         selectedShower = getIntent().getExtras().getString("device");
         device = new Gson().fromJson(selectedShower, ShowerDevice.class);
-        if (device.getName().isEmpty()) {
+        if (device.getName().isEmpty() || device.getName().equals("UNAMED")) {
             deviceTitle.setText(R.string.noName);
+            cardViewPlay.setCardBackgroundColor(Color.GRAY);
+            nameFlag = true;
+            helpUserSetName();
         } else {
             deviceTitle.setText(device.getName());
         }
@@ -60,11 +75,13 @@ public class ShowerDetailActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     switch (finalI) {
                         case 0:
-                            Intent showerIO = new Intent(ShowerDetailActivity.this, ShowerIO.class);
-                            showerIO.putExtra("device", ShowerDetailActivity.selectedShower);
-                            startActivity(showerIO);
-                            finish();
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            if (!nameFlag) {
+                                Intent showerIO = new Intent(ShowerDetailActivity.this, ShowerIO.class);
+                                showerIO.putExtra("device", ShowerDetailActivity.selectedShower);
+                                startActivity(showerIO);
+                                finish();
+                                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            }
                             break;
                         case 1:
                             Intent nameDeviceActivity = new Intent(ShowerDetailActivity.this, NameDeviceActivity.class);
@@ -84,11 +101,18 @@ public class ShowerDetailActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
         String showersArrayAsString = sharedPreferences.getString("listOfDevices", null);
 
-        String selectedDevice = new Gson().toJson(device);
-        Intent showerDetailActivity = new Intent(ShowerDetailActivity.this, ShowerDetailActivity.class);
-        showerDetailActivity.putExtra("showerDevices", showersArrayAsString);
-        startActivity(showerDetailActivity);
+        Intent showerListActivity = new Intent(ShowerDetailActivity.this, ShowerListActivity.class);
+        showerListActivity.putExtra("showerDevices", showersArrayAsString);
+        startActivity(showerListActivity);
         finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    private void helpUserSetName() {
+        // showing snack bar to help user to use the application
+        Snackbar snackbar = Snackbar
+                .make(scrollView, "Nomeie seu dispositivo antes de comerçar!", Snackbar.LENGTH_LONG)
+                .setDuration(5000);
+        snackbar.show();
     }
 }

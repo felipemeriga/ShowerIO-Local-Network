@@ -14,7 +14,7 @@ void check() {
     root = "{\"name\": \"" + deviceName + "\"," ;
     root = root + "\"ip\": \"" + ip + "\"}" ;
   } else {
-    root = "{\"name\": " + deviceName + "," ;
+    root = "{\"name\": \"" + deviceName +"\"," ;
     root = root + "\"ip\": \"" + ip + "\"}" ;
   }
 

@@ -11,6 +11,9 @@ import com.example.felip.smartbanho.Utils.ServerCallback;
 
 public class NameService {
 
+    public NameService() {
+        super();
+    }
 
     private ServerCallback callback;
 

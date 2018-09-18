@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.felip.smartbanho.Activities.ShowerIO.ShowerDetailActivity;
 import com.example.felip.smartbanho.Rest.LoginService;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
 import com.example.felip.smartbanho.R;
@@ -79,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
                 String selectedDeviceAsString = new Gson().toJson(device);
-                intent.putExtra("device",selectedDeviceAsString);
+                intent.putExtra("device", selectedDeviceAsString);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
@@ -168,14 +168,15 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
         editor.putString("email", _emailText.getText().toString());
         editor.putString("password", _passwordText.getText().toString());
-        editor.putBoolean("authorization",true);
+        editor.putBoolean("authorization", true);
         editor.apply();
 
-        // TODO - Open the ShowerIO detail or ShowerIO depending the authorization status
-/*        Intent showerIO = new Intent(LoginActivity.this, ShowerIO.class);
-        startActivity(showerIO);
+        Intent showerDetailActivity = new Intent(LoginActivity.this, ShowerDetailActivity.class);
+        String deviceAsString = new Gson().toJson(device);
+        showerDetailActivity.putExtra("device", deviceAsString);
+        startActivity(showerDetailActivity);
         finish();
-        finish();*/
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public void onLoginFailed() {
@@ -184,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setEnabled(true);
 
         SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
-        editor.putBoolean("authorization",true);
+        editor.putBoolean("authorization", true);
         editor.apply();
     }
 

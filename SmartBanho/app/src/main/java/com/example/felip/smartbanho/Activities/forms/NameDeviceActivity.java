@@ -47,8 +47,8 @@ public class NameDeviceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Uncomment in order to make this activity full screen
- /*       requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_name_device);
         ButterKnife.bind(this);
@@ -60,6 +60,8 @@ public class NameDeviceActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(NameDeviceActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Nomeando dispositivo...");
+
+        this.service = new NameService();
 
         nameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +78,7 @@ public class NameDeviceActivity extends AppCompatActivity {
         nameButton.setEnabled(false);
         device.setName(name);
         progressDialog.show();
+        updateDevicesList(name);
         if (validate()) {
             String serverBasePath = "http://" + device.getIp();
             this.service.setDeviceName(serverBasePath, name, this.requestQueue, new ServerCallback() {
@@ -111,6 +114,8 @@ public class NameDeviceActivity extends AppCompatActivity {
         for (ShowerDevice loopDevice : showers) {
             if (loopDevice.getIp().equals(device.getIp())) {
                 device.setName(name);
+                int index = showers.indexOf(loopDevice);
+                showers.get(index).setName(name);
             }
         }
         SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
