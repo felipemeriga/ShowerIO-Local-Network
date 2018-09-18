@@ -11,9 +11,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
-import com.example.felip.smartbanho.Activities.LoginActivity;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerListActivity;
-import com.example.felip.smartbanho.Process.ScanIpAddressImpl;
+import com.example.felip.smartbanho.Process.subnet.ScanIpAddressImpl;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.Rest.DeviceService;
 import com.example.felip.smartbanho.model.ShowerDevice;

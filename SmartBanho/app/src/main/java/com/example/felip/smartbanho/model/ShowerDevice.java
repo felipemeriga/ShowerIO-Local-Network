@@ -13,6 +13,8 @@ public class ShowerDevice implements Serializable {
     @SerializedName("ip")
     private String ip;
 
+    private String status;
+
     public String getName() {
         return name;
     }
@@ -34,11 +36,20 @@ public class ShowerDevice implements Serializable {
         this.ip = ip;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ShowerDevice{" +
                 "name='" + name + '\'' +
                 ", ip='" + ip + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
