@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Activities.forms;
+package com.example.felip.smartbanho.Activities.Forms;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,8 +16,6 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerDetailActivity;
-import com.example.felip.smartbanho.Activities.ShowerIO.ShowerIO;
-import com.example.felip.smartbanho.Activities.SignupActivity;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.Rest.NameService;
 import com.example.felip.smartbanho.Utils.ServerCallback;

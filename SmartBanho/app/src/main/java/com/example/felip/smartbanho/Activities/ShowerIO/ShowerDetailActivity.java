@@ -13,13 +13,10 @@ import android.support.v7.widget.CardView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.felip.smartbanho.Activities.forms.NameDeviceActivity;
+import com.example.felip.smartbanho.Activities.Forms.NameDeviceActivity;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ShowerDetailActivity extends AppCompatActivity {
 

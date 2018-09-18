@@ -4,12 +4,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.felip.smartbanho.Activities.Home.SearchForDevices;
+import com.example.felip.smartbanho.Activities.Search.SearchForDevices;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

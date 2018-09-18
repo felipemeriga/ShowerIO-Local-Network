@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.example.felip.smartbanho.Activities.Home.SearchForDevices;
+import com.example.felip.smartbanho.Activities.Search.SearchForDevices;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;

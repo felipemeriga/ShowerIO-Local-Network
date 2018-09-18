@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Activities.Home;
+package com.example.felip.smartbanho.Activities.Search;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

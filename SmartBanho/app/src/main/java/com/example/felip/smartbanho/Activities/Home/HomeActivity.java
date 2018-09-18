@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.felip.smartbanho.Activities.Search.SearchForDevices;
 import com.example.felip.smartbanho.R;
 
 public class HomeActivity extends AppCompatActivity {

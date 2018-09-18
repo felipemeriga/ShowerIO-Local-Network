@@ -24,7 +24,7 @@
         <activity android:name=".Activities.Error.DisplayMessageActivity" />
         <activity android:name=".Activities.ShowerIO.ShowerIO" />
         <activity
-            android:name=".Activities.Home.SearchForDevices"
+            android:name=".Activities.Search.SearchForDevices"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_search_for_devices"
             android:theme="@style/FullscreenTheme" />
@@ -45,7 +45,7 @@
         <activity
             android:name=".Activities.ShowerIO.ShowerDetailActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.forms.NameDeviceActivity"
+        <activity android:name=".Activities.Forms.NameDeviceActivity"
             android:theme="@style/AppTheme.Dark"></activity>
     </application>
 

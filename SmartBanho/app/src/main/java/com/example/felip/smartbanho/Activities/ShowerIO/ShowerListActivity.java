@@ -2,7 +2,6 @@ package com.example.felip.smartbanho.Activities.ShowerIO;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +21,6 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
-import com.example.felip.smartbanho.Activities.Home.SearchForDevices;
 import com.example.felip.smartbanho.Activities.LoginActivity;
 import com.example.felip.smartbanho.Adapter.ShowerListAdapter;
 import com.example.felip.smartbanho.Helper.RecyclerItemTouchHelper;
