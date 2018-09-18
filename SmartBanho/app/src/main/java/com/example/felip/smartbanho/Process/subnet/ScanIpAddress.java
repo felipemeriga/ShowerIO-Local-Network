@@ -1,4 +1,4 @@
-package com.example.felip.smartbanho.Process;
+package com.example.felip.smartbanho.Process.subnet;
 
 public interface ScanIpAddress {
 

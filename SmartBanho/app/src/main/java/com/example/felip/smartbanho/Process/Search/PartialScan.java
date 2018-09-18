@@ -7,7 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.felip.smartbanho.Process.subnet.SeekDevicesCallback;
+import com.example.felip.smartbanho.Utils.SeekDevicesCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
 
 import java.util.List;

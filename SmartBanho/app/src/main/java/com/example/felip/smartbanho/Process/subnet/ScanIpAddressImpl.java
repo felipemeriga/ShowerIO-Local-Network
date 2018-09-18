@@ -1,10 +1,12 @@
-package com.example.felip.smartbanho.Process;
+package com.example.felip.smartbanho.Process.subnet;
 
 
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+
+import com.example.felip.smartbanho.Process.subnet.ScanIpAddress;
 
 import java.util.List;
 

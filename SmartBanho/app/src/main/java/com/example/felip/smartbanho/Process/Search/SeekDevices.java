@@ -3,7 +3,7 @@ package com.example.felip.smartbanho.Process.Search;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
-import com.example.felip.smartbanho.Process.subnet.SeekDevicesCallback;
+import com.example.felip.smartbanho.Utils.SeekDevicesCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
 
