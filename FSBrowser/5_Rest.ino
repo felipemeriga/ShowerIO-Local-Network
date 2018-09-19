@@ -8,16 +8,19 @@ void check() {
   DBG_OUTPUT_PORT.println(espVersion);
   DBG_OUTPUT_PORT.println(WiFi.localIP());
   String root;
+  String deviceStatus = "ONLINE";
+  String id = (String)ESP.getChipId();
+  
   String deviceName = checkName();
+
   if (deviceName.equals("")) {
     deviceName = "UNAMED";
-    root = "{\"name\": \"" + deviceName + "\"," ;
-    root = root + "\"ip\": \"" + ip + "\"}" ;
-  } else {
-    root = "{\"name\": \"" + deviceName +"\"," ;
-    root = root + "\"ip\": \"" + ip + "\"}" ;
   }
 
+  root = "{\"id\": \"" + id + "\"," ;
+  root = root + "\"name\": \"" + deviceName + "\"," ;
+  root = root + "\"ip\": \"" + ip + "\"," ;
+  root = root + "\"status\": \"" + deviceStatus + "\"}" ;
   server.send(200, "application/json", root );
 }
 

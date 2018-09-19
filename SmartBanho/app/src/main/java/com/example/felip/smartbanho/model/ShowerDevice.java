@@ -7,12 +7,16 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class ShowerDevice implements Serializable {
 
+    @SerializedName("id")
+    private Long id;
+
     @SerializedName("name")
     private String name;
 
     @SerializedName("ip")
     private String ip;
 
+    @SerializedName("status")
     private String status;
 
     public String getName() {
