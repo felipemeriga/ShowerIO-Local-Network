@@ -9,17 +9,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.felip.smartbanho.Utils.SeekDevicesCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FullScan extends SeekDevices {
 
-    public FullScan(String subnet, RequestQueue requestQueue, SeekDevicesCallback callback) {
-        this.subnet = subnet;
-        requestQueue = requestQueue;
-        this.callback = callback;
+    public FullScan(String subnet, List<ShowerDevice> devices, RequestQueue requestQueue, SeekDevicesCallback callback) {
+        super(subnet, devices, requestQueue, callback);
     }
 
     @Override

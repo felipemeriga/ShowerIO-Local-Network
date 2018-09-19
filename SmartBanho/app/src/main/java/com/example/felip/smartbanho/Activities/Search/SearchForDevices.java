@@ -12,9 +12,12 @@ import android.widget.ProgressBar;
 
 import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerListActivity;
+import com.example.felip.smartbanho.Process.Search.FullScan;
+import com.example.felip.smartbanho.Process.Search.SeekDevices;
 import com.example.felip.smartbanho.Process.subnet.ScanIpAddressImpl;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.Rest.DeviceService;
+import com.example.felip.smartbanho.Utils.SeekDevicesCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.github.ybq.android.spinkit.style.WanderingCubes;
 import com.google.gson.Gson;
@@ -22,12 +25,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class SearchForDevices extends AppCompatActivity {
 
-
+    private SeekDevices seekDevices;
     public ScanIpAddressImpl scanIpAddress;
     private List<String> ipList;
     private String espIpAddress;
@@ -63,20 +67,29 @@ public class SearchForDevices extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         showers = new ArrayList<>();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                runAsyncTask();
-            }
-        }, SPLASH_TIME_OUT);
 
+        seekDevices.execute();
 
     }
 
-    private void runAsyncTask() {
-        new DeviceService(this).execute();
-    }
+    //TODO - Finish the decode
+    public void decodeScan() {
+        sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
+        String showersArrayAsString = sharedPreferences.getString("listOfDevices", null);
+        showers = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
+        if (showers.size() == 0) {
+            seekDevices = new FullScan(this.scanIpAddress.subnet, this.showers, this.requestQueue, new SeekDevicesCallback() {
+                @Override
+                public void onServerCallback(Boolean status, List<ShowerDevice> foundDevices) {
+                    showers = foundDevices;
+                    onFinishedScan();
+                }
+            });
+        } else {
 
+        }
+
+    }
 
     public void onFinishedScan() {
 

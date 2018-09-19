@@ -9,16 +9,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.felip.smartbanho.Utils.SeekDevicesCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 public class PartialScan extends SeekDevices {
 
+
     public PartialScan(String subnet, List<ShowerDevice> devices, RequestQueue requestQueue, SeekDevicesCallback callback) {
-        this.subnet = subnet;
-        requestQueue = requestQueue;
-        this.callback = callback;
-        this.showers = devices;
+        super(subnet, devices, requestQueue, callback);
     }
 
     @Override
