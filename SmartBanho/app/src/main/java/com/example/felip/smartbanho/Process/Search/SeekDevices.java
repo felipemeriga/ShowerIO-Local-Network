@@ -1,13 +1,19 @@
 package com.example.felip.smartbanho.Process.Search;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 
 import com.android.volley.RequestQueue;
+import com.example.felip.smartbanho.Activities.Home.HomeActivity;
+import com.example.felip.smartbanho.Activities.Search.SearchForDevices;
 import com.example.felip.smartbanho.Utils.SeekDevicesCallback;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class SeekDevices extends AsyncTask<Void, String, String> {
@@ -33,12 +39,19 @@ public abstract class SeekDevices extends AsyncTask<Void, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (RETRY != 0) {
-            RETRY--;
-            this.execute();
-        } else {
-           callback.onServerCallback(true,this.showers);
-        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (RETRY != 0) {
+                    RETRY--;
+                    execute();
+                } else {
+                    callback.onServerCallback(true,showers);
+                }
+            }
+        }, 6000);
+
     }
 
     @Override

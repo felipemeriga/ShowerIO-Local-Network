@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import com.example.felip.smartbanho.Activities.Error.DisplayMessageActivity;
 import com.example.felip.smartbanho.Activities.ShowerIO.ShowerListActivity;
 import com.example.felip.smartbanho.Process.Search.FullScan;
+import com.example.felip.smartbanho.Process.Search.PartialScan;
 import com.example.felip.smartbanho.Process.Search.SeekDevices;
 import com.example.felip.smartbanho.Process.subnet.ScanIpAddressImpl;
 import com.example.felip.smartbanho.R;
@@ -42,6 +43,7 @@ public class SearchForDevices extends AppCompatActivity {
     private final String SHOWERIO = "ShowerIO";
     public List<ShowerDevice> showers;
     public RequestQueue requestQueue;
+    private String scanType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,35 +60,47 @@ public class SearchForDevices extends AppCompatActivity {
         progressBar.setIndeterminateDrawable(wanderingCubes);
 
         Log.d("searchForDevices Class", "Getting the ip from esp saved in the last session");
-//        sharedPreferencesRead();
         ScanIpAddressImpl scanIpAddress = new ScanIpAddressImpl(this);
         this.scanIpAddress = scanIpAddress;
+
+        this.scanType = getIntent().getExtras().getString("scanType");
 
         this.scanIpAddress.setSubnet();
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         showers = new ArrayList<>();
-
+        decodeScan();
 
         seekDevices.execute();
 
     }
 
-    //TODO - Finish the decode
     public void decodeScan() {
+        String showersArrayAsString;
         sharedPreferences = getSharedPreferences(SHOWERIO, MODE_PRIVATE);
-        String showersArrayAsString = sharedPreferences.getString("listOfDevices", null);
-        showers = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
-        if (showers.size() == 0) {
-            seekDevices = new FullScan(this.scanIpAddress.subnet, this.showers, this.requestQueue, new SeekDevicesCallback() {
+        showersArrayAsString = sharedPreferences.getString("listOfDevices", null);
+        if (showersArrayAsString != null) {
+            showers = Arrays.asList(new Gson().fromJson(showersArrayAsString, ShowerDevice[].class));
+        }
+        if (this.scanType.equals("FULLSCAN")) {
+            this.seekDevices = new FullScan(this.scanIpAddress.subnet, this.showers, this.requestQueue, new SeekDevicesCallback() {
                 @Override
                 public void onServerCallback(Boolean status, List<ShowerDevice> foundDevices) {
                     showers = foundDevices;
                     onFinishedScan();
                 }
             });
-        } else {
+        } else if (this.scanType.equals("PARTIAL")) {
+            this.seekDevices = new PartialScan(this.scanIpAddress.subnet, this.showers, this.requestQueue, new SeekDevicesCallback() {
+                @Override
+                public void onServerCallback(Boolean status, List<ShowerDevice> foundDevices) {
+                    showers = foundDevices;
+                    onFinishedScan();
+                }
+            });
 
+        } else {
+            //TODO - Handler to the error activity
         }
 
     }

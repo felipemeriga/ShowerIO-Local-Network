@@ -2,6 +2,7 @@ package com.example.felip.smartbanho.Activities.ShowerIO;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.felip.smartbanho.Activities.LoginActivity;
+import com.example.felip.smartbanho.Activities.Search.SearchForDevices;
 import com.example.felip.smartbanho.Adapter.ShowerListAdapter;
 import com.example.felip.smartbanho.Helper.RecyclerItemTouchHelper;
 import com.example.felip.smartbanho.R;
@@ -143,39 +145,66 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
             SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
             editor.putString("actualDeviceIp", selectedDevice.getIp());
             editor.apply();
-            progressBar.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            toolbar.setVisibility(View.GONE);
-            credentialsUtils.hasAnyCredentials(deviceBasePath, requestQueue, new ServerCallback() {
-                @Override
-                public void onServerCallback(Boolean status, String response) {
-                    if (status == true) {
-                        String selectedDeviceAsString = new Gson().toJson(selectedDevice);
-                        Log.i("ShowerListActivity", "onServerCallback(), request to credentials went successful");
-                        if (response.equals("Y")) {
-                            Log.i("ShowerListActivity", "onServerCallback(), server has credentials, opening LoginActivity");
-                            Intent loginActivity = new Intent(ShowerListActivity.this, LoginActivity.class);
-                            loginActivity.putExtra("device", selectedDeviceAsString);
-                            startActivity(loginActivity);
-                            finish();
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                        } else if (response.equals("N")) {
-                            Log.i("ShowerListActivity", "onServerCallback(), server has no credentials, opening ShowerDetailActivity");
+            if (selectedDevice.getStatus().equals("ONLINE")) {
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                toolbar.setVisibility(View.GONE);
+                credentialsUtils.hasAnyCredentials(deviceBasePath, requestQueue, new ServerCallback() {
+                    @Override
+                    public void onServerCallback(Boolean status, String response) {
+                        if (status == true) {
+                            String selectedDeviceAsString = new Gson().toJson(selectedDevice);
+                            Log.i("ShowerListActivity", "onServerCallback(), request to credentials went successful");
+                            if (response.equals("Y")) {
+                                Log.i("ShowerListActivity", "onServerCallback(), server has credentials, opening LoginActivity");
+                                Intent loginActivity = new Intent(ShowerListActivity.this, LoginActivity.class);
+                                loginActivity.putExtra("device", selectedDeviceAsString);
+                                startActivity(loginActivity);
+                                finish();
+                                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            } else if (response.equals("N")) {
+                                Log.i("ShowerListActivity", "onServerCallback(), server has no credentials, opening ShowerDetailActivity");
 
-                            Intent showerDetailActivity = new Intent(ShowerListActivity.this, ShowerDetailActivity.class);
-                            showerDetailActivity.putExtra("device", selectedDeviceAsString);
-                            startActivity(showerDetailActivity);
-                            finish();
-                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                                Intent showerDetailActivity = new Intent(ShowerListActivity.this, ShowerDetailActivity.class);
+                                showerDetailActivity.putExtra("device", selectedDeviceAsString);
+                                startActivity(showerDetailActivity);
+                                finish();
+                                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Não foi possível efetuar uma comunicação com o servidor, reinicie o aplicativo", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Não foi possível efetuar uma comunicação com o servidor, reinicie o aplicativo", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        toolbar.setVisibility(View.VISIBLE);
                     }
-                }
-            });
+                });
+
+            } else {
+                // showing snack bar to help user to use the application
+                recyclerView.startNestedScroll(1,1);
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Ops! Este dispositivo parece estar desconectado! Efetue um escaneamento da rede", Snackbar.LENGTH_LONG)
+                        .setDuration(8000);
+                snackbar.setAction("Escanear", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    int index = showerDevicesList.indexOf(selectedDevice);
+                    showerDevicesList.remove(index);
+                    SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
+                    Intent seachForDevices = new Intent(ShowerListActivity.this, SearchForDevices.class);
+                    String showerArrayAsString = new Gson().toJson(showerDevicesList);
+                    editor.putString("listOfDevices", showerArrayAsString);
+                    editor.commit();
+                    seachForDevices.putExtra("scanType", "FULLSCAN");
+                    startActivity(seachForDevices);
+                    finish();
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                    }
+                });
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+            }
         }
     }
 

@@ -50,24 +50,35 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/ip_label"
+            android:id="@+id/status_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="5dp"
-            android:text="@string/ip_label"
+            android:text="@string/status_label"
             android:textColor="@color/device_name"
             android:textSize="17dp" />
 
         <TextView
-            android:id="@+id/ip"
+            android:id="@+id/status_online"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/ip_label"
-            android:textColor="@color/device_name"
+            android:layout_toRightOf="@id/status_label"
+            android:textColor="@color/online"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/status_offline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/status_label"
+            android:textColor="@color/offline"
             android:textSize="17dp" />
 
 

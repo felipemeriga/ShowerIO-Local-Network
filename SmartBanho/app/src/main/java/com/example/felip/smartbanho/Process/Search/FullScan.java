@@ -46,7 +46,7 @@ public class FullScan extends SeekDevices {
                                         foundShower = gson.fromJson(response.toString(), ShowerDevice.class);
                                         Boolean hasAlreadyFound = false;
                                         for (ShowerDevice shower : showers) {
-                                            if (foundShower.getIp().equals(shower.getIp())) {
+                                            if (foundShower.getId().equals(shower.getId())) {
                                                 hasAlreadyFound = true;
                                             }
                                         }

@@ -48,10 +48,19 @@ public class ShowerDevice implements Serializable {
         this.status = status;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "ShowerDevice{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", ip='" + ip + '\'' +
                 ", status='" + status + '\'' +
                 '}';

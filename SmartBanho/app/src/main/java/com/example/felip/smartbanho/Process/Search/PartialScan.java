@@ -22,7 +22,7 @@ public class PartialScan extends SeekDevices {
 
     @Override
     protected String doInBackground(Void... records) {
-        for(final ShowerDevice device: showers){
+        for (final ShowerDevice device : showers) {
             Log.d("doInBackground()", "scanning device with ip: " + device.getIp());
             String fixedUrl = "http://";
             fixedUrl = fixedUrl + device.getIp() + this.esp8266RestUrl;
@@ -55,8 +55,6 @@ public class PartialScan extends SeekDevices {
                 throw e;
             }
         }
-
-
         return "finished";
     }
 }
