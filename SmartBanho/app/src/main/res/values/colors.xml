@@ -9,6 +9,7 @@
     <color name="showerAccent">#FF4081</color>
 
     <color name="bg_row_background">#317efa</color>
+    <color name="bg_row_background_offline">#fa3138</color>
     <color name="row_normal_background">#317efa</color>
     <color name="device_name">#535353</color>
     <color name="offline">#CC1D1D</color>

@@ -26,7 +26,7 @@ public class FullScan extends SeekDevices {
     @Override
     protected String doInBackground(Void... records) {
         try {
-            int timeout = 100;
+            int timeout = 150;
             for (int i = 2; i < 255; i++) {
                 String host = "";
                 host = this.subnet + "." + i;

@@ -88,7 +88,7 @@ public class SignupActivity extends AppCompatActivity {
         });
         progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage("Criando uma conta...");
     }
 
     public void signup() {
@@ -134,7 +134,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Erro de Login", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
         progressDialog.dismiss();
     }
@@ -148,7 +148,7 @@ public class SignupActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+            _nameText.setError("Pelo menos 3 dígitos");
             valid = false;
         } else {
             _nameText.setError(null);
@@ -156,7 +156,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError("Entre um endereço de email válido");
             valid = false;
         } else {
             _emailText.setError(null);
@@ -164,14 +164,14 @@ public class SignupActivity extends AppCompatActivity {
 
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            _passwordText.setError("entre uma senha entre 4 e 10 dígitos");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
 
         if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-            _reEnterPasswordText.setError("Password Do not match");
+            _reEnterPasswordText.setError("As senhas inválida");
             valid = false;
         } else {
             _reEnterPasswordText.setError(null);

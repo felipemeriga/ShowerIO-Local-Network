@@ -68,7 +68,7 @@ public class SearchForDevices extends AppCompatActivity {
         this.scanIpAddress.setSubnet();
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        showers = new ArrayList<>();
+        showers = new ArrayList<ShowerDevice>();
         decodeScan();
 
         seekDevices.execute();

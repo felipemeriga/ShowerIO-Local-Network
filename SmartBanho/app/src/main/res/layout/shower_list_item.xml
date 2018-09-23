@@ -32,6 +32,35 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/view_background_offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_row_background_offline">
+
+        <ImageView
+            android:id="@+id/scrollOfflineIcon"
+            android:layout_width="@dimen/ic_delete"
+            android:layout_height="@dimen/ic_delete"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:src="@drawable/ic_undo_black_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padd_10"
+            android:layout_toLeftOf="@id/scrollOfflineIcon"
+            android:text="@string/restart"
+            android:textColor="#fff"
+            android:textSize="24dp" />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

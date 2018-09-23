@@ -76,8 +76,8 @@ public class NameDeviceActivity extends AppCompatActivity {
         nameButton.setEnabled(false);
         device.setName(name);
         progressDialog.show();
-        updateDevicesList(name);
         if (validate()) {
+            updateDevicesList(name);
             String serverBasePath = "http://" + device.getIp();
             this.service.setDeviceName(serverBasePath, name, this.requestQueue, new ServerCallback() {
                 @Override

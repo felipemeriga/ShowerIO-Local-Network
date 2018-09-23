@@ -19,6 +19,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         this.listener = listener;
     }
 
+
     //As RecyclerItemTouchHelper is overriding ItemTouchHelper.SimpleCallback method onMove
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -28,6 +29,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     //As RecyclerItemTouchHelper is overriding ItemTouchHelper.SimpleCallback method onSelectedChanged
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+
         if (viewHolder != null) {
             final View foregroundView = ((ShowerListAdapter.MyViewHolder) viewHolder).viewForeground;
 

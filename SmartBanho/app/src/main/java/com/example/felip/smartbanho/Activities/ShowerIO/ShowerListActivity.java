@@ -181,29 +181,21 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
                 });
 
             } else {
-                // showing snack bar to help user to use the application
-                recyclerView.startNestedScroll(1,1);
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Ops! Este dispositivo parece estar desconectado! Efetue um escaneamento da rede", Snackbar.LENGTH_LONG)
-                        .setDuration(8000);
-                snackbar.setAction("Escanear", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+
                     int index = showerDevicesList.indexOf(selectedDevice);
                     showerDevicesList.remove(index);
-                    SharedPreferences.Editor editor = getSharedPreferences(SHOWERIO, MODE_PRIVATE).edit();
                     Intent seachForDevices = new Intent(ShowerListActivity.this, SearchForDevices.class);
                     String showerArrayAsString = new Gson().toJson(showerDevicesList);
+                    if(showerArrayAsString.equals("[]")){
+                        showerArrayAsString = null;
+                    }
                     editor.putString("listOfDevices", showerArrayAsString);
                     editor.commit();
                     seachForDevices.putExtra("scanType", "FULLSCAN");
                     startActivity(seachForDevices);
                     finish();
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                    }
-                });
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
+
             }
         }
     }
@@ -212,7 +204,7 @@ public class ShowerListActivity extends AppCompatActivity implements RecyclerIte
         // showing snack bar to help user to use the application
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, "Deslize para esquerda para escolher um chuveiro!", Snackbar.LENGTH_LONG)
-                .setDuration(8000);
+                .setDuration(32000);
         snackbar.show();
     }
 

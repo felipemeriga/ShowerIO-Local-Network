@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
 import android.support.v7.widget.CardView;
@@ -14,6 +15,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.felip.smartbanho.Activities.Forms.NameDeviceActivity;
+import com.example.felip.smartbanho.Activities.LoginActivity;
+import com.example.felip.smartbanho.Activities.Search.SearchForDevices;
 import com.example.felip.smartbanho.R;
 import com.example.felip.smartbanho.model.ShowerDevice;
 import com.google.gson.Gson;
@@ -73,6 +76,7 @@ public class ShowerDetailActivity extends AppCompatActivity {
                     switch (finalI) {
                         case 0:
                             if (!nameFlag) {
+                                Log.i("ShowerDetailActivity", "case 1, opening ShowerIOActivity");
                                 Intent showerIO = new Intent(ShowerDetailActivity.this, ShowerIO.class);
                                 showerIO.putExtra("device", ShowerDetailActivity.selectedShower);
                                 startActivity(showerIO);
@@ -81,12 +85,22 @@ public class ShowerDetailActivity extends AppCompatActivity {
                             }
                             break;
                         case 1:
+                            Log.i("ShowerDetailActivity", "case 2, opening NameDeviceActivity");
                             Intent nameDeviceActivity = new Intent(ShowerDetailActivity.this, NameDeviceActivity.class);
                             nameDeviceActivity.putExtra("device", ShowerDetailActivity.selectedShower);
                             startActivity(nameDeviceActivity);
                             finish();
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             break;
+                        case 2:
+                            Log.i("ShowerDetailActivity", "case 2, opening LoginActivity");
+                            Intent loginActivity = new Intent(ShowerDetailActivity.this, LoginActivity.class);
+                            loginActivity.putExtra("device", ShowerDetailActivity.selectedShower);
+                            startActivity(loginActivity);
+                            finish();
+                            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                            break;
+
                     }
                 }
             });

@@ -20,7 +20,7 @@ public class ShowerListAdapter extends RecyclerView.Adapter<ShowerListAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView name, status_online, status_offline;
-        public RelativeLayout viewBackground, viewForeground;
+        public RelativeLayout viewBackground, viewForeground, viewBackgroundOffline;
 
         public MyViewHolder(View view) {
             super(view);
@@ -29,6 +29,7 @@ public class ShowerListAdapter extends RecyclerView.Adapter<ShowerListAdapter.My
             status_offline = view.findViewById(R.id.status_offline);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
+            viewBackgroundOffline = view.findViewById(R.id.view_background_offline);
         }
     }
 
@@ -57,15 +58,20 @@ public class ShowerListAdapter extends RecyclerView.Adapter<ShowerListAdapter.My
         } else {
             holder.name.setText(showerDevice.getName());
         }
-        if(showerDevice.getStatus().equals("ONLINE")){
+        if (showerDevice.getStatus().equals("ONLINE")) {
             holder.status_online.setText("Online");
             holder.status_online.setVisibility(View.VISIBLE);
             holder.status_offline.setVisibility(View.GONE);
-        }else {
+            holder.viewBackgroundOffline.setVisibility(View.GONE);
+            holder.viewBackground.setVisibility(View.VISIBLE);
+        } else {
             holder.status_offline.setText("Offline");
             holder.status_offline.setVisibility(View.VISIBLE);
             holder.status_online.setVisibility(View.GONE);
+            holder.viewBackgroundOffline.setVisibility(View.VISIBLE);
+            holder.viewBackground.setVisibility(View.GONE);
         }
+
     }
 
     @Override
